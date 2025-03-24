@@ -20,7 +20,7 @@ class Setting extends HookWidget {
     var email = useState(false);
 
     return Scaffold(
-      appBar: showAppBar(context),
+      appBar: showAppBar(context, isSettings: true),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
@@ -122,9 +122,14 @@ class SwitchTile extends StatelessWidget {
 }
 
 class AppSwitch extends StatelessWidget {
-  const AppSwitch({super.key, required this.value, required this.onChanged});
+  const AppSwitch(
+      {super.key,
+      required this.value,
+      required this.onChanged,
+      this.inactiveTrackColor = AppColor.kEAEAEA});
 
   final bool value;
+  final Color inactiveTrackColor;
   final void Function(bool) onChanged;
 
   @override
@@ -132,9 +137,9 @@ class AppSwitch extends StatelessWidget {
     return Switch(
         value: value,
         activeColor: AppColor.white,
-        activeTrackColor: AppColor.k9C6644,
+        activeTrackColor: AppColor.kA89294,
         inactiveThumbColor: AppColor.white,
-        inactiveTrackColor: AppColor.kEAEAEA,
+        inactiveTrackColor: inactiveTrackColor,
         trackOutlineColor: const WidgetStatePropertyAll(AppColor.kEAEAEA),
         onChanged: onChanged);
   }

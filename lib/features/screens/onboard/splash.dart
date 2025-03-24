@@ -17,7 +17,7 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 8), () {
+    Future.delayed(const Duration(seconds: 5), () {
       if (mounted) {
         Navigator.pushReplacementNamed(context, AppRoute.signIn);
       }
@@ -30,34 +30,28 @@ class _SplashState extends State<Splash> {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned(
-              top: 40,
-              child: SvgPicture.asset(
-                Vectors.splashB1,
-                height: 400.h,
-              )),
-          Align(
-            alignment: Alignment.topRight,
-            child: SvgPicture.asset(Vectors.splashB2),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
+          ConstrainedBox(
+            constraints: const BoxConstraints.expand(width: double.infinity),
             child: SvgPicture.asset(
-              Vectors.splashB3,
-              height: 300.h,
+              Vectors.splashBG,
+              alignment: Alignment.topCenter,
+              // fit: BoxFit.contain,
             ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: SvgPicture.asset(Vectors.splashB4),
+          ConstrainedBox(
+            constraints: const BoxConstraints.expand(width: double.infinity),
+            child: SvgPicture.asset(
+              Vectors.splashBgg,
+              alignment: Alignment.bottomCenter,
+            ),
           ),
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
-              padding: EdgeInsets.only(right: 15.w),
-              child: Text('Abayati',
+              padding: EdgeInsets.only(right: 30.w, bottom: 30.h),
+              child: Text('Lamsti',
                   textAlign: TextAlign.center,
-                  style: LibreCasion.kFontW7.copyWith(fontSize: 64.spMin)),
+                  style: Lobster.kFontW4.copyWith(fontSize: 64.spMin)),
             ),
           ).hPad
         ],

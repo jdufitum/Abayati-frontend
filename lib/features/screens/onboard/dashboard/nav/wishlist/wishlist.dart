@@ -23,11 +23,14 @@ class Wishlist extends StatelessWidget {
           children: [
             // h(12),
             // const CustomAppBar(),
-            h(22),
+            // h(22),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-              color: AppColor.white,
-              child: Text('My Favourite\'s',
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(5.r),
+                  border: Border.all(color: AppColor.kA89294)),
+              child: Text('My Wishlist',
                   style: LibreCasion.kFontW7.copyWith(fontSize: 24.spMin)),
             ),
             h(30),
