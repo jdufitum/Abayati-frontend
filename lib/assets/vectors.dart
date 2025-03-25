@@ -10,6 +10,7 @@ class Vectors {
   static const String edit = 'assets/vectors/edit.svg';
   static const String eye = 'assets/vectors/eye.svg';
   static const String facebook = 'assets/vectors/facebook.svg';
+  static const String favFill = 'assets/vectors/fav-fill.svg';
   static const String fav = 'assets/vectors/fav.svg';
   static const String filt = 'assets/vectors/filt.svg';
   static const String filter = 'assets/vectors/filter.svg';

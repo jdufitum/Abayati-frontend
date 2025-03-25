@@ -25,8 +25,8 @@ class SignIn extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final emailCtrl = useTextEditingController();
-    final passwordCtrl = useTextEditingController();
+    final emailCtrl = useTextEditingController(text: 'user@yopmail.com');
+    final passwordCtrl = useTextEditingController(text: 'password');
     final key = useState(GlobalKey<FormState>());
 
     return Scaffold(

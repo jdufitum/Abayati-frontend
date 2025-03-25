@@ -12,6 +12,7 @@ void main() {
     expect(File(Vectors.edit).existsSync(), isTrue);
     expect(File(Vectors.eye).existsSync(), isTrue);
     expect(File(Vectors.facebook).existsSync(), isTrue);
+    expect(File(Vectors.favFill).existsSync(), isTrue);
     expect(File(Vectors.fav).existsSync(), isTrue);
     expect(File(Vectors.filt).existsSync(), isTrue);
     expect(File(Vectors.filter).existsSync(), isTrue);

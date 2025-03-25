@@ -19,9 +19,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         final result = await _repository.login(event.loginDto);
-        result.fold((l) => emit(LoginError(error: l)), (data) {
-          globals.token = data.token;
-          emit(LoginSuccess(loginRsp: data));
+        result.fold((error) => emit(LoginError(error: error)), (user) {
+          globals.token = user.token;
+          globals.user = user.data;
+          emit(LoginSuccess(loginRsp: user));
         });
       } catch (e) {
         final ex = NetworkExceptions.getDioException(e);
@@ -33,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthLoading());
       try {
         final result = await _repository.register(event.registerDto);
-        result.fold((l) => emit(RegisterError(error: l)),
+        result.fold((error) => emit(RegisterError(error: error)),
             (r) => emit(RegisterSuccess()));
       } catch (e) {
         final ex = NetworkExceptions.getDioException(e);

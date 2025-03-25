@@ -1,4 +1,8 @@
+import 'package:abayati/features/core/model/response/auth.dart';
+import 'package:abayati/features/core/model/response/product.dart';
 import 'package:abayati/features/core/services/service/auth/bloc/auth_bloc.dart';
+import 'package:abayati/features/core/services/service/product/bloc/product_bloc.dart';
+import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -20,8 +24,14 @@ class AppGlobals {
   SharedPreferences? sharedPreferences;
   late final LocalStorage localStorage;
   String? token;
+  User? user;
+
+  List<Product>? allProducts;
 
   AuthBloc? authBloc;
+  ProductBloc? productBloc;
+
+  WishlistCubit? wishlistCubit;
 
   Future<void> init() async {
     if (sharedPreferences == null) {
@@ -33,7 +43,13 @@ class AppGlobals {
     }
 
     token = '';
+    user = User();
+    allProducts = [];
+
     authBloc = AuthBloc();
+    productBloc = ProductBloc();
+
+    wishlistCubit = WishlistCubit();
   }
 
   Future<void> dispose() async {

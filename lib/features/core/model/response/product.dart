@@ -1,4 +1,4 @@
-class Products {
+class Product {
   final String? id;
   final String? name;
   final String? description;
@@ -12,7 +12,7 @@ class Products {
   final List<dynamic>? ratingAndReviews;
   final int? v;
 
-  Products({
+  Product({
     this.id,
     this.name,
     this.description,
@@ -27,7 +27,7 @@ class Products {
     this.v,
   });
 
-  factory Products.fromJson(Map<String, dynamic> json) => Products(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
     id: json["_id"],
     name: json["name"],
     description: json["description"],

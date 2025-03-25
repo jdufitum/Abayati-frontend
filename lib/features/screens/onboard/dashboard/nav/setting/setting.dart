@@ -1,4 +1,5 @@
 import 'package:abayati/features/utils/app_route.dart';
+import 'package:abayati/features/utils/components/app_globals.dart';
 import 'package:abayati/features/utils/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -40,7 +41,7 @@ class Setting extends HookWidget {
                       w(14),
                       const Avatar(),
                       w(12),
-                      Text('Jennifer Stone',
+                      Text(globals.user?.username ?? '',
                           style: Rubik.kFontW4.copyWith(fontSize: 18.spMin))
                     ],
                   ),
