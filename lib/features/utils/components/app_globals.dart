@@ -27,6 +27,7 @@ class AppGlobals {
   User? user;
 
   List<Product>? allProducts;
+  List<Product>? wishlist;
 
   AuthBloc? authBloc;
   ProductBloc? productBloc;
@@ -45,6 +46,7 @@ class AppGlobals {
     token = '';
     user = User();
     allProducts = [];
+    wishlist = [];
 
     authBloc = AuthBloc();
     productBloc = ProductBloc();
@@ -54,6 +56,9 @@ class AppGlobals {
 
   Future<void> dispose() async {
     token = null;
+    user = null;
+    allProducts = null;
+    wishlist = null;
 
     sharedPreferences?.clear();
   }

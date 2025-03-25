@@ -1,3 +1,4 @@
+import 'package:abayati/features/core/model/request/product.dart';
 import 'package:abayati/features/core/services/service/product/bloc/product_bloc.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
 import 'package:abayati/features/utils/app_route.dart';
@@ -27,13 +28,29 @@ class Home extends HookWidget {
   Widget build(BuildContext context) {
     useEffect(() {
       globals.productBloc!.add(AllProductEvent());
+      globals.productBloc!.add(WishlistEvent());
       return null;
     }, []);
     return Scaffold(
       appBar: showAppBar(context),
       body: SafeArea(
-        child: BlocBuilder<ProductBloc, ProductState>(
+        child:
+        BlocConsumer<ProductBloc, ProductState>(
           bloc: globals.productBloc,
+          listener: (context, state) {
+            if (state is WishlistSuccess) {
+              for (var product in globals.wishlist!) {
+                globals.wishlistCubit!.initWishlist(product);
+              }
+            }
+            if (state is AddToWishlistSuccess ||
+                state is RemoveFromWishlistSuccess ||
+                state is AddToWishlistError ||
+                state is RemoveFromWishlistError) {
+              print('here ----------> ');
+              // globals.productBloc!.add(WishlistEvent());
+            }
+          },
           builder: (context, state) {
             return SingleChildScrollView(
               child: Skeletonizer(
@@ -185,10 +202,11 @@ class AppSearchField extends StatelessWidget {
     return Stack(
       children: [
         CupertinoSearchTextField(
+          itemColor: AppColor.kA89294,
           decoration: BoxDecoration(
               border: Border.all(color: AppColor.kA89294),
               color: AppColor.white,
-              borderRadius: BorderRadius.circular(6.r)),
+              borderRadius: BorderRadius.circular(1.r)),
           padding: REdgeInsetsDirectional.fromSTEB(10.w, 8.h, 16.w, 8.h),
           placeholder: 'Search any Product..',
           placeholderStyle:
@@ -199,7 +217,7 @@ class AppSearchField extends StatelessWidget {
         Positioned(
             top: 0,
             bottom: 0,
-            right: 16.w,
+            right: 20.w,
             child: SvgPicture.asset(Vectors.mic))
       ],
     );
@@ -256,23 +274,35 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, AppRoute.details);
-      },
-      onDoubleTap: () {
-        globals.wishlistCubit!.toggleFavorite(product!);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColor.white,
-          border: Border.all(color: AppColor.kA89294),
-          borderRadius: BorderRadius.circular(6.r),
-        ),
-        child: BlocBuilder<WishlistCubit, WishlistState>(
-          bloc: globals.wishlistCubit,
-          builder: (context, state) {
-            return Column(
+    return BlocBuilder<WishlistCubit, WishlistState>(
+      bloc: globals.wishlistCubit,
+      builder: (context, state) {
+        void triggerEvent() {
+          if (state.favoriteProduct.contains(product?.id)) {
+            globals.productBloc!.add(RemoveFromWishlistEvent(
+                wishlistDto: WishlistDto(productId: product!.id!)));
+          } else {
+            globals.productBloc!.add(AddToWishlistEvent(
+                wishlistDto: WishlistDto(productId: product!.id!)));
+          }
+        }
+
+        return GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, AppRoute.details);
+          },
+          onDoubleTap: () {
+            globals.wishlistCubit!.toggleFavorite(product!).then((_) {
+              // triggerEvent();
+            });
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColor.white,
+              border: Border.all(color: AppColor.kA89294),
+              borderRadius: BorderRadius.circular(6.r),
+            ),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
@@ -295,10 +325,14 @@ class ItemCard extends StatelessWidget {
                         padding: EdgeInsets.only(top: 7.h, right: 11.w),
                         child: InkWell(
                           onTap: () {
-                            globals.wishlistCubit!.toggleFavorite(product!);
+                            globals.wishlistCubit!
+                                .toggleFavorite(product!)
+                                .then((_) {
+                              // triggerEvent();
+                            });
                           },
                           child: SvgPicture.asset(
-                            state.favoriteProduct.contains(product)
+                            state.favoriteProduct.contains(product?.id)
                                 ? Vectors.favFill
                                 : Vectors.fav,
                           ),
@@ -349,10 +383,10 @@ class ItemCard extends StatelessWidget {
                   ),
                 )
               ],
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
