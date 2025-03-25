@@ -1,7 +1,11 @@
+import 'package:abayati/features/screens/onboard/dashboard/nav/setting/setting.dart';
 import 'package:abayati/features/utils/app_route.dart';
+import 'package:abayati/features/utils/components/app_snackbar.dart';
+import 'package:abayati/features/utils/components/loader.dart';
 import 'package:abayati/features/utils/extension.dart';
 import 'package:abayati/features/utils/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,7 +15,7 @@ import '../../../../../utils/app_color.dart';
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/text_style.dart';
 
-class Details extends StatelessWidget {
+class Details extends HookWidget {
   const Details({super.key});
 
   @override
@@ -23,6 +27,8 @@ class Details extends StatelessWidget {
       AppColor.k9C3EAF
     ];
     List<String> sizing = ['XS', 'S', 'M', 'L', 'XL'];
+
+    var heightSwitch = useState(false);
     return Scaffold(
       backgroundColor: AppColor.white,
       appBar: showBackAppBar(context, title: 'Details'),
@@ -100,12 +106,50 @@ class Details extends StatelessWidget {
                 ),
                 const HDivider(),
                 AppButton(
-                  onPressed: () {},
-                  text: '3D Try On',
-                  buttonColor: AppColor.kD4A384,
+                  onPressed: () {
+                    AppLoader.show(context);
+                    // AppSnackbar.success(context, message: 'message');x
+                  },
+                  text: 'Virtual Try On',
+                  buttonColor: AppColor.kD2BFC1,
                   fontStyle: FontStyle.italic,
                 ),
                 const HDivider(),
+                Text('Height',
+                    style: Montserrat.kFontW4.copyWith(fontSize: 16.spMin)),
+                h(3),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 25.h,
+                        decoration: BoxDecoration(
+                            color: AppColor.kD9D9D9,
+                            borderRadius: BorderRadius.circular(4.r)),
+                      ),
+                    ),
+                    w(14),
+                    Text('inch',
+                        style: Rubik.kFontW4.copyWith(
+                            fontSize: 10.spMin,
+                            color: heightSwitch.value
+                                ? AppColor.kBCBCBC
+                                : AppColor.black)),
+                    AppSwitch(
+                        value: heightSwitch.value,
+                        onChanged: (val) {
+                          heightSwitch.value = val;
+                        },
+                        inactiveTrackColor: AppColor.kA89294),
+                    Text('cm',
+                        style: Rubik.kFontW4.copyWith(
+                            fontSize: 10.spMin,
+                            color: heightSwitch.value
+                                ? AppColor.black
+                                : AppColor.kBCBCBC)),
+                  ],
+                ),
+                h(17),
                 Text('Sizing',
                     style: Montserrat.kFontW4.copyWith(fontSize: 16.spMin)),
                 h(3),
@@ -146,7 +190,7 @@ class Details extends StatelessWidget {
                 Text('This order will approximately take 2-3 weeks',
                     style: Montserrat.kFontW7.copyWith(
                         fontSize: 12.spMin,
-                        color: AppColor.k9C6644,
+                        color: AppColor.kA89294,
                         fontStyle: FontStyle.italic)),
                 h(7),
                 Row(
@@ -198,7 +242,7 @@ class Details extends StatelessWidget {
                   text: 'Add to Basket',
                   fontStyle: FontStyle.italic,
                 ),
-                h(20)
+                h(60)
               ],
             ).eHPad(14)
           ],

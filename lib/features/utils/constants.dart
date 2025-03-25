@@ -16,7 +16,7 @@ SizedBox w(double width) {
   return SizedBox(width: width.w);
 }
 
-PreferredSize showAppBar(BuildContext context) {
+PreferredSize showAppBar(BuildContext context, {bool isSettings = false}) {
   return PreferredSize(
     preferredSize: Size(double.infinity, 56.h),
     child: AppBar(
@@ -26,14 +26,21 @@ PreferredSize showAppBar(BuildContext context) {
       centerTitle: true,
       leading: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, AppRoute.analytics);
+          if (isSettings) {
+            Navigator.pop(context);
+          } else {
+            Navigator.pushNamed(context, AppRoute.settings);
+          }
         },
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 10.w),
           // padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 6.h),
-          decoration: const BoxDecoration(
-              color: AppColor.kF2F2F2, shape: BoxShape.circle),
-          child: SvgPicture.asset(Vectors.filter, fit: BoxFit.scaleDown),
+          decoration: BoxDecoration(
+              border: isSettings ? null : Border.all(color: AppColor.kA89294),
+              color: AppColor.kF2F2F2,
+              shape: BoxShape.circle),
+          child: Icon(Icons.settings_outlined,
+              color: isSettings ? AppColor.kEB3030 : AppColor.black),
         ),
       ),
       actions: [
@@ -42,8 +49,8 @@ PreferredSize showAppBar(BuildContext context) {
           child: const Avatar(),
         ),
       ],
-      title: Text('Abayati',
-          style: LibreCasion.kFontW7.copyWith(fontSize: 18.spMin)),
+      title:
+          Text('Lamsti', style: Lobster.kFontW4.copyWith(fontSize: 22.spMin)),
     ),
   );
 }

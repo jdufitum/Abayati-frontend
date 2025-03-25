@@ -53,7 +53,7 @@ class ForgotPassword extends StatelessWidget {
                 height: 52.h,
                 width: 52.w,
                 decoration: const BoxDecoration(
-                    color: AppColor.k9C6644, shape: BoxShape.circle),
+                    color: AppColor.kA89294, shape: BoxShape.circle),
                 child: Icon(
                   Icons.arrow_back,
                   size: 36.dm,
