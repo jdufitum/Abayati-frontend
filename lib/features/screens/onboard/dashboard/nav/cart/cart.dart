@@ -2,109 +2,132 @@ import 'package:abayati/assets/resources.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/home/details.dart';
 import 'package:abayati/features/utils/app_color.dart';
 import 'package:abayati/features/utils/app_route.dart';
+import 'package:abayati/features/utils/components/app_globals.dart';
 import 'package:abayati/features/utils/extension.dart';
 import 'package:abayati/features/utils/text_style.dart';
 import 'package:abayati/features/utils/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../../../../core/model/response/product.dart';
+import '../../../../../core/services/service/product/bloc/product_bloc.dart';
 import '../../../../../utils/constants.dart';
 
-class Cart extends StatelessWidget {
-  const Cart({
+class CartView extends HookWidget {
+  const CartView({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    useEffect(() {
+      globals.productBloc!.add(CartEvent());
+      // return null;
+    });
     final showLeading =
         (ModalRoute.settingsOf(context)?.arguments ?? false) as bool;
-    return Scaffold(
-      appBar: showBackAppBar(context, showLeading: showLeading, title: 'Cart'),
-      body: SafeArea(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          h(30),
-          Row(
-            children: [
-              SvgPicture.asset(Vectors.location),
-              w(8),
-              Text('Delivery Address', style: Montserrat.kFontW6.copyWith())
-            ],
-          ),
-          h(10),
-          IntrinsicHeight(
-            child: Row(
+    return BlocBuilder<ProductBloc, ProductState>(
+      bloc: globals.productBloc,
+      builder: (context, state) {
+        return Scaffold(
+          appBar:
+              showBackAppBar(context, showLeading: showLeading, title: 'Cart'),
+          body: SafeArea(
+              child: Skeletonizer(
+            enabled: state is WishlistLoading && globals.cart!.isEmpty,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                    decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: Stack(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Address :',
-                                style: Montserrat.kFontW5
-                                    .copyWith(fontSize: 12.spMin)),
-                            h(4),
-                            Text('Qatar foundation, Green Spine',
-                                style: Montserrat.kFontW5
-                                    .copyWith(fontSize: 12.spMin)),
-                            h(10)
-                          ],
+                h(30),
+                Row(
+                  children: [
+                    SvgPicture.asset(Vectors.location),
+                    w(8),
+                    Text('Delivery Address',
+                        style: Montserrat.kFontW6.copyWith())
+                  ],
+                ),
+                h(10),
+                IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 8.h),
+                          decoration: BoxDecoration(
+                            color: AppColor.white,
+                            borderRadius: BorderRadius.circular(6.r),
+                          ),
+                          child: Stack(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Address :',
+                                      style: Montserrat.kFontW5
+                                          .copyWith(fontSize: 12.spMin)),
+                                  h(4),
+                                  Text('Qatar foundation, Green Spine',
+                                      style: Montserrat.kFontW5
+                                          .copyWith(fontSize: 12.spMin)),
+                                  h(10)
+                                ],
+                              ),
+                              Align(
+                                  alignment: Alignment.topRight,
+                                  child: SvgPicture.asset(Vectors.edit))
+                            ],
+                          ),
                         ),
-                        Align(
-                            alignment: Alignment.topRight,
-                            child: SvgPicture.asset(Vectors.edit))
-                      ],
-                    ),
+                      ),
+                      w(12),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 27.w, vertical: 27.h),
+                        decoration: BoxDecoration(
+                          color: AppColor.white,
+                          borderRadius: BorderRadius.circular(6.r),
+                        ),
+                        child: SvgPicture.asset(Vectors.add),
+                      )
+                    ],
                   ),
                 ),
-                w(12),
-                Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 27.w, vertical: 27.h),
-                  decoration: BoxDecoration(
-                    color: AppColor.white,
-                    borderRadius: BorderRadius.circular(6.r),
-                  ),
-                  child: SvgPicture.asset(Vectors.add),
-                )
-              ],
-            ),
-          ),
-          h(11),
-          Text('Shopping List', style: Montserrat.kFontW6),
-          h(10),
-          Flexible(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                const ShoppingTile(),
                 h(11),
-                const ShoppingTile(),
-                h(11),
-                const ShoppingTile(),
+                Text('Shopping List', style: Montserrat.kFontW6),
+                h(10),
+                if (globals.cart!.isNotEmpty)
+                  ListView.separated(
+                      itemBuilder: (context, index) {
+                        final product = globals.cart![index];
+                        return ShoppingTile(product: product);
+                      },
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) => h(11),
+                      itemCount: globals.cart!.length)
+                else
+                  Expanded(
+                      child: Center(
+                          child: Text('Cart is empty',
+                              style: Montserrat.kFontW6))),
+                h(30),
+                AppButton(
+                    enabled: globals.cart!.isNotEmpty,
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoute.checkout);
+                    },
+                    text: 'Pay')
               ],
-            ),
-          ),
-          h(30),
-          AppButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoute.checkout);
-              },
-              text: 'Pay')
-        ],
-      ).hPad),
+            ).hPad,
+          )),
+        );
+      },
     );
   }
 }
@@ -112,7 +135,10 @@ class Cart extends StatelessWidget {
 class ShoppingTile extends StatelessWidget {
   const ShoppingTile({
     super.key,
+    required this.product,
   });
+
+  final Cart product;
 
   @override
   Widget build(BuildContext context) {
@@ -129,14 +155,15 @@ class ShoppingTile extends StatelessWidget {
                 width: 131.w,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.r),
-                    image: const DecorationImage(
-                        image: AssetImage(Images.abaya105))),
+                    image: DecorationImage(
+                        image: NetworkImage(product.productId!.imgUrl!))),
               ),
               w(9),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Blue moon abaya', style: Montserrat.kFontW6.copyWith()),
+                  Text(product.productId!.description!,
+                      style: Montserrat.kFontW6.copyWith()),
                   h(5),
                   Row(
                     children: [
@@ -177,7 +204,7 @@ class ShoppingTile extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4.r),
                         border: Border.all(color: AppColor.black, width: .3)),
-                    child: Text('800 QR',
+                    child: Text('${product.productId!.price} QR',
                         style: Montserrat.kFontW6.copyWith(fontSize: 16.spMin)),
                   )
                 ],
@@ -189,9 +216,9 @@ class ShoppingTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total Order (1)   :',
+              Text('Total Order (${product.quantity})   :',
                   style: Montserrat.kFontW5.copyWith(fontSize: 12.spMin)),
-              Text('800 QR',
+              Text('${product.quantity! * product.productId!.price!} QR',
                   style: Montserrat.kFontW6.copyWith(fontSize: 12.spMin))
             ],
           )

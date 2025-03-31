@@ -1,3 +1,5 @@
+//product
+
 class Product {
   final String? id;
   final String? name;
@@ -56,6 +58,8 @@ class Product {
         v: json["__v"],
       );
 }
+
+//category
 
 class Category {
   final String? id;
@@ -142,3 +146,80 @@ class Category {
 //         v: json["__v"],
 //       );
 // }
+
+// cart
+class Cart {
+  final ProductId? productId;
+  final int? quantity;
+  final String? id;
+
+  Cart({
+    this.productId,
+    this.quantity,
+    this.id,
+  });
+
+  factory Cart.fromJson(Map<String, dynamic> json) => Cart(
+        productId: json["productId"] == null
+            ? null
+            : ProductId.fromJson(json["productId"]),
+        quantity: json["quantity"],
+        id: json["_id"],
+      );
+}
+
+//product id
+class ProductId {
+  final String? id;
+  final String? name;
+  final String? description;
+  final String? category;
+  final int? price;
+  final String? imgUrl;
+  final List<double>? embedding;
+  final List<dynamic>? sizeVariations;
+  final List<dynamic>? materialDetails;
+  final List<dynamic>? colorVariations;
+  final List<dynamic>? ratingAndReviews;
+  final int? v;
+
+  ProductId({
+    this.id,
+    this.name,
+    this.description,
+    this.category,
+    this.price,
+    this.imgUrl,
+    this.embedding,
+    this.sizeVariations,
+    this.materialDetails,
+    this.colorVariations,
+    this.ratingAndReviews,
+    this.v,
+  });
+
+  factory ProductId.fromJson(Map<String, dynamic> json) => ProductId(
+        id: json["_id"],
+        name: json["name"],
+        description: json["description"],
+        category: json["category"],
+        price: json["price"],
+        imgUrl: json["imgUrl"],
+        embedding: json["embedding"] == null
+            ? []
+            : List<double>.from(json["embedding"]!.map((x) => x?.toDouble())),
+        sizeVariations: json["sizeVariations"] == null
+            ? []
+            : List<dynamic>.from(json["sizeVariations"]!.map((x) => x)),
+        materialDetails: json["materialDetails"] == null
+            ? []
+            : List<dynamic>.from(json["materialDetails"]!.map((x) => x)),
+        colorVariations: json["colorVariations"] == null
+            ? []
+            : List<dynamic>.from(json["colorVariations"]!.map((x) => x)),
+        ratingAndReviews: json["ratingAndReviews"] == null
+            ? []
+            : List<dynamic>.from(json["ratingAndReviews"]!.map((x) => x)),
+        v: json["__v"],
+      );
+}

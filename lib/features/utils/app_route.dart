@@ -45,7 +45,7 @@ class AppRoute {
     store: (context) => const Store(),
     storeDetails: (context) => const StoreDetails(),
     checkout: (context) => const Checkout(),
-    cart: (context) => const Cart(),
+    cart: (context) => const CartView(),
     analytics: (context) => const AnalyticDashboard(),
     settings: (context) => const Setting(),
     viewMeasurement: (context) => const ViewMeasurement(),

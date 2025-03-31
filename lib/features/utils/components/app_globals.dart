@@ -28,6 +28,8 @@ class AppGlobals {
 
   List<Product>? allProducts;
   List<Product>? wishlist;
+  List<Category>? category;
+  List<Cart>? cart;
 
   AuthBloc? authBloc;
   ProductBloc? productBloc;
@@ -47,6 +49,8 @@ class AppGlobals {
     user = User();
     allProducts = [];
     wishlist = [];
+    category = [];
+    cart = [];
 
     authBloc = AuthBloc();
     productBloc = ProductBloc();
@@ -59,6 +63,8 @@ class AppGlobals {
     user = null;
     allProducts = null;
     wishlist = null;
+    category = null;
+    cart = null;
 
     sharedPreferences?.clear();
   }
