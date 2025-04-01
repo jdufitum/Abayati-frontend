@@ -137,10 +137,7 @@ class CartView extends HookWidget {
 }
 
 class ShoppingTile extends StatelessWidget {
-  const ShoppingTile({
-    super.key,
-    required this.product,
-  });
+  const ShoppingTile({super.key, required this.product});
 
   final Cart product;
 
@@ -238,16 +235,18 @@ class ShoppingTile extends StatelessWidget {
                               wishlistDto: WishlistDto(
                                   productId: product.productId!.id!)));
                         },
-                        child: state is ProductLoading
-                            ? SizedBox(
-                                height: 18.h,
-                                width: 18.w,
-                                child: const CircularProgressIndicator(
-                                  color: AppColor.kB08968,
-                                ),
-                              )
-                            : const Icon(Icons.delete,
-                                color: AppColor.kEB3030));
+                        // child: state is ProductLoading
+                        //     ? SizedBox(
+                        //         height: 18.h,
+                        //         width: 18.w,
+                        //         child: const CircularProgressIndicator(
+                        //           color: AppColor.kB08968,
+                        //         ),
+                        //       )
+                        //     : const Icon(Icons.delete,
+                        //         color: AppColor.kEB3030)
+                        child:
+                            const Icon(Icons.delete, color: AppColor.kEB3030));
                   },
                 ),
               )
