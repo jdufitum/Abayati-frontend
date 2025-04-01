@@ -44,16 +44,56 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(WishlistError(error: error));
       }
     });
+    on<CartEvent>((event, emit) async {
+      emit(WishlistLoading());
+      try {
+        final result = await _repository.cart();
+        result.fold((error) => CategoryError(error: error), (data) {
+          globals.cart = data;
+          emit(CartSuccess(cart: data));
+        });
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(CartError(error: error));
+      }
+    });
+    on<CategoryEvent>((event, emit) async {
+      emit(ProductLoading());
+      try {
+        final result = await _repository.category();
+        result.fold((error) => CategoryError(error: error), (data) {
+          globals.category = data;
+          emit(CategorySuccess(category: data));
+        });
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(CategoryError(error: error));
+      }
+    });
     on<AddToWishlistEvent>((event, emit) async {
       emit(WishlistLoading());
       try {
         final result = await _repository.addToWishlist(event.wishlistDto);
-        result.fold((error) => AllProductError(error: error),
+        result.fold((error) => AddToWishlistError(error: error),
             (data) => emit(AddToWishlistSuccess()));
       } catch (e) {
         final ex = NetworkExceptions.getDioException(e);
         final error = NetworkExceptions.getErrorMessage(ex);
         emit(AddToWishlistError(error: error));
+      }
+    });
+    on<AddToCartEvent>((event, emit) async {
+      emit(ProductLoading());
+      try {
+        final result = await _repository.addToCart(event.wishlistDto);
+        result.fold((error) => AddToCartError(error: error),
+            (data) => emit(AddToCartSuccess(message: data.message!)));
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(AddToCartError(error: error));
       }
     });
     on<RemoveFromWishlistEvent>((event, emit) async {
@@ -66,6 +106,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         final ex = NetworkExceptions.getDioException(e);
         final error = NetworkExceptions.getErrorMessage(ex);
         emit(RemoveFromWishlistError(error: error));
+      }
+    });
+    on<RemoveFromCartEvent>((event, emit) async {
+      emit(ProductLoading());
+      try {
+        final result = await _repository.removeFromCart(event.wishlistDto);
+        result.fold((error) => RemoveFromCartError(error: error),
+            (data) => emit(RemoveFromCartSuccess()));
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(RemoveFromCartError(error: error));
       }
     });
   }

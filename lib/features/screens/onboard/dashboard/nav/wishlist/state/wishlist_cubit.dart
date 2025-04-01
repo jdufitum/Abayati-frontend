@@ -10,23 +10,22 @@ class WishlistCubit extends Cubit<WishlistState> {
 
   Future<void> toggleFavorite(Product product) async {
     final favorite = state.favoriteProduct.toSet();
-    final wishlist = globals.wishlist?.toList();
+    final wishlist = state.wishlist.toList();
 
     if (favorite.contains(product.id)) {
       favorite.remove(product.id);
-      wishlist?.remove(product);
+      wishlist.remove(product);
     } else {
       favorite.add(product.id!);
-      wishlist?.add(product);
+      wishlist.add(product);
     }
-    globals.wishlist = wishlist;
-    emit(state.copyWith(favoriteProduct: favorite));
+    emit(state.copyWith(favoriteProduct: favorite, wishlist: wishlist));
   }
 
   Future<void> initWishlist(Product product) async {
     final favorite = state.favoriteProduct.toSet();
     favorite.add(product.id!);
 
-    emit(state.copyWith(favoriteProduct: favorite));
+    emit(state.copyWith(favoriteProduct: favorite, wishlist: globals.wishlist));
   }
 }

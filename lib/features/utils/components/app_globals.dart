@@ -1,5 +1,6 @@
 import 'package:abayati/features/core/model/response/auth.dart';
 import 'package:abayati/features/core/model/response/product.dart';
+import 'package:abayati/features/core/services/service/ai/bloc/ai_bloc.dart';
 import 'package:abayati/features/core/services/service/auth/bloc/auth_bloc.dart';
 import 'package:abayati/features/core/services/service/product/bloc/product_bloc.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
@@ -28,9 +29,12 @@ class AppGlobals {
 
   List<Product>? allProducts;
   List<Product>? wishlist;
+  List<Category>? category;
+  List<Cart>? cart;
 
   AuthBloc? authBloc;
   ProductBloc? productBloc;
+  AiBloc? aiBloc;
 
   WishlistCubit? wishlistCubit;
 
@@ -47,9 +51,12 @@ class AppGlobals {
     user = User();
     allProducts = [];
     wishlist = [];
+    category = [];
+    cart = [];
 
     authBloc = AuthBloc();
     productBloc = ProductBloc();
+    aiBloc = AiBloc();
 
     wishlistCubit = WishlistCubit();
   }
@@ -59,6 +66,8 @@ class AppGlobals {
     user = null;
     allProducts = null;
     wishlist = null;
+    category = null;
+    cart = null;
 
     sharedPreferences?.clear();
   }

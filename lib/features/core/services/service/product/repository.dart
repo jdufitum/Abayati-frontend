@@ -31,6 +31,30 @@ class ProductRepository {
     }
   }
 
+  Future<Either<String, List<Cart>>> cart() async {
+    final output = await _datasource.cart();
+    if (output.error != null) {
+      return Left(output.message!);
+    } else {
+      final cart = (output.data as List)
+          .map((product) => Cart.fromJson(product))
+          .toList();
+      return Right(cart);
+    }
+  }
+
+  Future<Either<String, List<Category>>> category() async {
+    final output = await _datasource.category();
+    if (output.error != null) {
+      return Left(output.message!);
+    } else {
+      final category = (output.data as List)
+          .map((product) => Category.fromJson(product))
+          .toList();
+      return Right(category);
+    }
+  }
+
   Future<Either<String, AbstractResponse>> addToWishlist(
       WishlistDto wishlistDto) async {
     final output = await _datasource.addToWishlist(wishlistDto);
@@ -41,9 +65,29 @@ class ProductRepository {
     }
   }
 
+  Future<Either<String, AbstractResponse>> addToCart(
+      WishlistDto wishlistDto) async {
+    final output = await _datasource.addToCart(wishlistDto);
+    if (output.error != null) {
+      return Left(output.message!);
+    } else {
+      return Right(output);
+    }
+  }
+
   Future<Either<String, AbstractResponse>> removeFromWishlist(
       WishlistDto wishlistDto) async {
     final output = await _datasource.removeFromWishlist(wishlistDto);
+    if (output.error != null) {
+      return Left(output.message!);
+    } else {
+      return Right(output);
+    }
+  }
+
+  Future<Either<String, AbstractResponse>> removeFromCart(
+      WishlistDto wishlistDto) async {
+    final output = await _datasource.removeFromCart(wishlistDto);
     if (output.error != null) {
       return Left(output.message!);
     } else {

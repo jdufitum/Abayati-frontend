@@ -115,7 +115,7 @@ class Nav extends StatelessWidget {
                     textStyle: Roboto.kFontW4.copyWith(fontSize: 12.spMin),
                     title: 'Wishlist')),
             PersistentTabConfig(
-                screen: Cart(),
+                screen: CartView(),
                 item: ItemConfig(
                     icon: SvgPicture.asset(Vectors.shoppingCart),
                     activeForegroundColor: Colors.white,
@@ -192,7 +192,7 @@ class Nav extends StatelessWidget {
           body: switch (state.navItem) {
             NavItem.home => const Home(),
             NavItem.wishlist => const Wishlist(),
-            NavItem.cart => const Cart(),
+            NavItem.cart => const CartView(),
             NavItem.ai => const SearchAi(),
             NavItem.setting => const Setting(),
           },

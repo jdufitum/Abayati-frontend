@@ -19,36 +19,35 @@ import '../../../../../utils/app_color.dart';
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/text_style.dart';
 
-class Home extends HookWidget {
+class Home extends StatefulHookWidget {
   const Home({
     super.key,
   });
 
   @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
   Widget build(BuildContext context) {
     useEffect(() {
       globals.productBloc!.add(AllProductEvent());
       globals.productBloc!.add(WishlistEvent());
+      globals.productBloc!.add(CategoryEvent());
+      globals.productBloc!.add(CartEvent());
       return null;
-    }, []);
+    });
     return Scaffold(
       appBar: showAppBar(context),
       body: SafeArea(
-        child:
-        BlocConsumer<ProductBloc, ProductState>(
+        child: BlocConsumer<ProductBloc, ProductState>(
           bloc: globals.productBloc,
           listener: (context, state) {
             if (state is WishlistSuccess) {
-              for (var product in globals.wishlist!) {
+              for (var product in state.wishlist) {
                 globals.wishlistCubit!.initWishlist(product);
               }
-            }
-            if (state is AddToWishlistSuccess ||
-                state is RemoveFromWishlistSuccess ||
-                state is AddToWishlistError ||
-                state is RemoveFromWishlistError) {
-              print('here ----------> ');
-              // globals.productBloc!.add(WishlistEvent());
             }
           },
           builder: (context, state) {
@@ -136,9 +135,10 @@ class Home extends HookWidget {
                           h(7),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: features
+                              children: globals.category!
                                   .map((feature) => FeatureTile(
-                                      image: feature.image, text: feature.text))
+                                      image: feature.imageUrl!,
+                                      text: feature.name!))
                                   .toList()),
                         ],
                       ),
@@ -277,22 +277,19 @@ class ItemCard extends StatelessWidget {
     return BlocBuilder<WishlistCubit, WishlistState>(
       bloc: globals.wishlistCubit,
       builder: (context, state) {
-        void triggerEvent() {
-          if (state.favoriteProduct.contains(product?.id)) {
-            globals.productBloc!.add(RemoveFromWishlistEvent(
-                wishlistDto: WishlistDto(productId: product!.id!)));
-          } else {
-            globals.productBloc!.add(AddToWishlistEvent(
-                wishlistDto: WishlistDto(productId: product!.id!)));
-          }
-        }
-
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, AppRoute.details);
+            Navigator.pushNamed(context, AppRoute.details, arguments: product);
           },
           onDoubleTap: () {
             globals.wishlistCubit!.toggleFavorite(product!).then((_) {
+              if (state.favoriteProduct.contains(product?.id)) {
+                globals.productBloc!.add(RemoveFromWishlistEvent(
+                    wishlistDto: WishlistDto(productId: product!.id!)));
+              } else {
+                globals.productBloc!.add(AddToWishlistEvent(
+                    wishlistDto: WishlistDto(productId: product!.id!)));
+              }
               // triggerEvent();
             });
           },
@@ -329,6 +326,16 @@ class ItemCard extends StatelessWidget {
                                 .toggleFavorite(product!)
                                 .then((_) {
                               // triggerEvent();
+                              if (state.favoriteProduct.contains(product?.id)) {
+                                globals.productBloc!.add(
+                                    RemoveFromWishlistEvent(
+                                        wishlistDto: WishlistDto(
+                                            productId: product!.id!)));
+                              } else {
+                                globals.productBloc!.add(AddToWishlistEvent(
+                                    wishlistDto:
+                                        WishlistDto(productId: product!.id!)));
+                              }
                             });
                           },
                           child: SvgPicture.asset(
@@ -425,8 +432,8 @@ class FeatureTile extends StatelessWidget {
           width: 56.w,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image:
-                  DecorationImage(image: AssetImage(image), fit: BoxFit.cover)),
+              image: DecorationImage(
+                  image: NetworkImage(image), fit: BoxFit.cover)),
         ),
         h(4),
         Text(text,

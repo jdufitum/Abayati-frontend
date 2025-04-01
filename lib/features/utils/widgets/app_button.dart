@@ -18,6 +18,7 @@ class AppButton extends StatelessWidget {
       this.height = 55,
       this.side = BorderSide.none,
       this.enabled = true,
+      this.loading = false,
       this.child});
 
   final VoidCallback onPressed;
@@ -31,6 +32,7 @@ class AppButton extends StatelessWidget {
   final double? width;
   final BorderSide side;
   final bool? enabled;
+  final bool loading;
   final FontStyle? fontStyle;
 
   @override
@@ -39,19 +41,29 @@ class AppButton extends StatelessWidget {
       height: height.h,
       width: width?.w,
       child: ElevatedButton(
-          onPressed: enabled! ? onPressed : null,
+          onPressed: enabled!
+              ? !loading
+                  ? onPressed
+                  : null
+              : null,
           style: ElevatedButton.styleFrom(
               backgroundColor: enabled! ? buttonColor : AppColor.k888888,
               elevation: 0,
               splashFactory: NoSplash.splashFactory,
               shape: RoundedRectangleBorder(
                   side: side, borderRadius: BorderRadius.circular(8.r))),
-          child: Text(text,
-              textAlign: TextAlign.center,
-              style: Montserrat.kFontW6.copyWith(
-                  color: textColor ?? AppColor.white,
-                  fontStyle: fontStyle,
-                  fontSize: fontSize.spMin))),
+          child: loading
+              ? SizedBox(
+                  height: 18.h,
+                  width: 18.w,
+                  child: const CircularProgressIndicator(color: AppColor.white),
+                )
+              : Text(text,
+                  textAlign: TextAlign.center,
+                  style: Montserrat.kFontW6.copyWith(
+                      color: textColor ?? AppColor.white,
+                      fontStyle: fontStyle,
+                      fontSize: fontSize.spMin))),
     );
   }
 }

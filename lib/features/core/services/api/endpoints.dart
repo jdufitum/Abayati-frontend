@@ -11,7 +11,16 @@ class Endpoints {
 
   static String get wishlist => 'wishlist';
 
+  static String get category => 'categories';
+
   static String get addToWishlist => 'addToWishlist';
+
+  static String get addToCart => 'addToCart';
+
+  static String get removeFromCart => 'removeFromCart';
+
+  static String get cart => 'cart';
+  static String get search => 'search';
 
   static String get removeFromWishlist => 'removeFromWishlist';
 }

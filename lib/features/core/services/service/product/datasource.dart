@@ -26,6 +26,26 @@ class ProductDatasource {
     }
   }
 
+  Future<AbstractResponse> category() async {
+    try {
+      final response = await _client.get(Endpoints.category);
+      final output = handleResponse(response);
+      return output;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<AbstractResponse> cart() async {
+    try {
+      final response = await _client.get(Endpoints.cart);
+      final output = handleResponse(response);
+      return output;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<AbstractResponse> addToWishlist(WishlistDto wishlistDto) async {
     try {
       final response = await _client.post(Endpoints.addToWishlist,
@@ -37,9 +57,31 @@ class ProductDatasource {
     }
   }
 
+  Future<AbstractResponse> addToCart(WishlistDto wishlistDto) async {
+    try {
+      final response =
+          await _client.post(Endpoints.addToCart, data: wishlistDto.toJson());
+      final output = handleResponse(response);
+      return output;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<AbstractResponse> removeFromCart(WishlistDto wishlistDto) async {
+    try {
+      final response =
+          await _client.delete(Endpoints.removeFromCart, data: wishlistDto.toJson());
+      final output = handleResponse(response);
+      return output;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<AbstractResponse> removeFromWishlist(WishlistDto wishlistDto) async {
     try {
-      final response = await _client.post(Endpoints.removeFromWishlist,
+      final response = await _client.delete(Endpoints.removeFromWishlist,
           data: wishlistDto.toJson());
       final output = handleResponse(response);
       return output;
