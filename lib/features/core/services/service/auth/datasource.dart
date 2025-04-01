@@ -2,7 +2,6 @@ import 'package:abayati/features/core/model/request/auth.dart';
 import 'package:abayati/features/core/model/response/abstract_response.dart';
 import 'package:abayati/features/core/services/api/api_client.dart';
 import 'package:abayati/features/core/services/api/endpoints.dart';
-import 'package:dio/dio.dart';
 
 class AuthDatasource {
   final _client = ApiClient();

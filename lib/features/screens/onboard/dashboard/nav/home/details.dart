@@ -39,6 +39,7 @@ class Details extends HookWidget {
     List<String> sizing = ['XS', 'S', 'M', 'L', 'XL'];
 
     var heightSwitch = useState(false);
+    var quantity = useState(1);
     final product = ModalRoute.settingsOf(context)!.arguments as Product;
     return Scaffold(
       backgroundColor: AppColor.white,
@@ -245,9 +246,14 @@ class Details extends HookWidget {
                               color: AppColor.kD9D9D9),
                           child: Row(
                             children: [
-                              const Icon(
-                                Icons.arrow_drop_up_rounded,
-                                color: AppColor.k9E9D9D,
+                              InkWell(
+                                onTap: () {
+                                  quantity.value++;
+                                },
+                                child: const Icon(
+                                  Icons.arrow_drop_up_rounded,
+                                  color: AppColor.k9E9D9D,
+                                ),
                               ),
                               Container(
                                 margin: EdgeInsets.symmetric(horizontal: 6.w),
@@ -257,14 +263,21 @@ class Details extends HookWidget {
                                     color: AppColor.white,
                                     borderRadius: BorderRadius.circular(4.r)),
                                 child: Text(
-                                  '1',
+                                  '${quantity.value}',
                                   style: Montserrat.kFontW4
                                       .copyWith(fontSize: 15.spMin),
                                 ),
                               ),
-                              const Icon(
-                                Icons.arrow_drop_down_rounded,
-                                color: AppColor.k9E9D9D,
+                              InkWell(
+                                onTap: () {
+                                  if (quantity.value > 1) {
+                                    quantity.value--;
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.arrow_drop_down_rounded,
+                                  color: AppColor.k9E9D9D,
+                                ),
                               )
                             ],
                           ),
@@ -275,11 +288,6 @@ class Details extends HookWidget {
                     BlocConsumer<ProductBloc, ProductState>(
                       bloc: globals.productBloc,
                       listener: (context, state) {
-                        if (state is WishlistLoading) {
-                          AppLoader.show(context);
-                        } else {
-                          AppLoader.hide();
-                        }
                         if (state is AddToCartSuccess) {
                           AppSnackbar.success(context, message: state.message);
                           globals.productBloc!.add(CartEvent());
@@ -290,12 +298,12 @@ class Details extends HookWidget {
                       },
                       builder: (context, state) {
                         return AppButton(
+                          loading: state is ProductLoading,
                           onPressed: () {
                             globals.productBloc!.add(AddToCartEvent(
                                 wishlistDto: WishlistDto(
                                     productId: product.id!,
-                                    quantity:
-                                        Random().nextInt(20).toString())));
+                                    quantity: quantity.value.toString())));
                           },
                           text: 'Add to Basket',
                           fontStyle: FontStyle.italic,

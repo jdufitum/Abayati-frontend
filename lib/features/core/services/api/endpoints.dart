@@ -20,6 +20,7 @@ class Endpoints {
   static String get removeFromCart => 'removeFromCart';
 
   static String get cart => 'cart';
+  static String get search => 'search';
 
   static String get removeFromWishlist => 'removeFromWishlist';
 }

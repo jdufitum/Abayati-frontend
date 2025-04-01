@@ -85,7 +85,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       }
     });
     on<AddToCartEvent>((event, emit) async {
-      emit(WishlistLoading());
+      emit(ProductLoading());
       try {
         final result = await _repository.addToCart(event.wishlistDto);
         result.fold((error) => AddToCartError(error: error),
@@ -109,7 +109,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       }
     });
     on<RemoveFromCartEvent>((event, emit) async {
-      emit(WishlistLoading());
+      emit(ProductLoading());
       try {
         final result = await _repository.removeFromCart(event.wishlistDto);
         result.fold((error) => RemoveFromCartError(error: error),
