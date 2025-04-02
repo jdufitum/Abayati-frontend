@@ -46,6 +46,26 @@ class ProductDatasource {
     }
   }
 
+  Future<AbstractResponse> stores() async {
+    try {
+      final response = await _client.get(Endpoints.stores);
+      final output = handleResponse(response);
+      return output;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> storesByCategory(String id) async {
+    try {
+      final response = await _client.get(Endpoints.storesByCategory(id));
+      // final output = handleResponse(response);
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<AbstractResponse> addToWishlist(WishlistDto wishlistDto) async {
     try {
       final response = await _client.post(Endpoints.addToWishlist,
@@ -70,8 +90,8 @@ class ProductDatasource {
 
   Future<AbstractResponse> removeFromCart(WishlistDto wishlistDto) async {
     try {
-      final response =
-          await _client.delete(Endpoints.removeFromCart, data: wishlistDto.toJson());
+      final response = await _client.delete(Endpoints.removeFromCart,
+          data: wishlistDto.toJson());
       final output = handleResponse(response);
       return output;
     } catch (e) {

@@ -223,3 +223,55 @@ class ProductId {
         v: json["__v"],
       );
 }
+
+//stores
+class ProductStore {
+  final String? id;
+  final String? name;
+  final List<Category>? categories;
+  final List<Product>? products;
+  final String? description;
+  final String? imgUrl;
+  final List<dynamic>? ratingAndReviews;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? v;
+
+  ProductStore({
+    this.id,
+    this.name,
+    this.categories,
+    this.products,
+    this.description,
+    this.imgUrl,
+    this.ratingAndReviews,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+  });
+
+  factory ProductStore.fromJson(Map<String, dynamic> json) => ProductStore(
+        id: json["_id"],
+        name: json["name"],
+        categories: json["categories"] == null
+            ? []
+            : List<Category>.from(
+                json["categories"]!.map((x) => Category.fromJson(x))),
+        products: json["products"] == null
+            ? []
+            : List<Product>.from(
+                json["products"]!.map((x) => Product.fromJson(x))),
+        description: json["description"],
+        imgUrl: json["imgUrl"],
+        ratingAndReviews: json["ratingAndReviews"] == null
+            ? []
+            : List<dynamic>.from(json["ratingAndReviews"]!.map((x) => x)),
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
+      );
+}

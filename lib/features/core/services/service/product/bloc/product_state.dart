@@ -12,6 +12,8 @@ final class ProductInitial extends ProductState {}
 
 final class ProductLoading extends ProductState {}
 
+final class StoresLoading extends ProductState {}
+
 final class AllProductSuccess extends ProductState {
   final List<Product> allProducts;
 
@@ -46,6 +48,30 @@ final class CartError extends ProductState {
   final String error;
 
   const CartError({required this.error});
+}
+
+final class StoreSuccess extends ProductState {
+  final List<ProductStore> stores;
+
+  const StoreSuccess({required this.stores});
+}
+
+final class StoreError extends ProductState {
+  final String error;
+
+  const StoreError({required this.error});
+}
+
+final class StoreByCategorySuccess extends ProductState {
+  final List<ProductStore> stores;
+
+  const StoreByCategorySuccess({required this.stores});
+}
+
+final class StoreByCategoryError extends ProductState {
+  final String error;
+
+  const StoreByCategoryError({required this.error});
 }
 
 final class WishlistLoading extends ProductState {}

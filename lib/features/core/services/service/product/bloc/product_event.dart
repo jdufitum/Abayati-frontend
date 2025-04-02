@@ -11,6 +11,14 @@ final class CategoryEvent extends ProductEvent {}
 
 final class CartEvent extends ProductEvent {}
 
+final class StoresEvent extends ProductEvent {}
+
+final class StoresByCategoryEvent extends ProductEvent {
+  final String id;
+
+  StoresByCategoryEvent({required this.id});
+}
+
 final class RemoveFromWishlistEvent extends ProductEvent {
   final WishlistDto wishlistDto;
 

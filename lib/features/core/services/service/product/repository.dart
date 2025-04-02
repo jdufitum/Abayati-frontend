@@ -55,6 +55,31 @@ class ProductRepository {
     }
   }
 
+  Future<Either<String, List<ProductStore>>> stores() async {
+    final output = await _datasource.stores();
+    if (output.error != null) {
+      return Left(output.message!);
+    } else {
+      final stores = (output.data as List)
+          .map((product) => ProductStore.fromJson(product))
+          .toList();
+      return Right(stores);
+    }
+  }
+
+  Future<Either<String, List<ProductStore>>> storesByCategory(String id) async {
+    final output = await _datasource.storesByCategory(id);
+    // if (output.error != null) {
+    //   return Left(output.message!);
+    // }
+    // else {
+      final stores = (output as List)
+          .map((product) => ProductStore.fromJson(product))
+          .toList();
+      return Right(stores);
+    // }
+  }
+
   Future<Either<String, AbstractResponse>> addToWishlist(
       WishlistDto wishlistDto) async {
     final output = await _datasource.addToWishlist(wishlistDto);

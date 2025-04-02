@@ -44,14 +44,19 @@ class SearchAi extends HookWidget {
                 onSubmitted: (query) {
                   if (query!.isNotEmpty) {
                     globals.aiBloc!.add(SearchEvent(query: query.trim()));
-                  } else {
-                    products.value.clear();
+                  }
+                },
+                onChanged: (query) {
+                  if (query!.isEmpty) {
+                    products.value = [];
                   }
                 },
               ),
               h(9),
               if (state is AiLoading)
-                 const Flexible(child: Center(child: CircularProgressIndicator(
+                const Flexible(
+                    child: Center(
+                        child: CircularProgressIndicator(
                   color: AppColor.kB08968,
                 )))
               else if (products.value.isNotEmpty)
@@ -88,9 +93,11 @@ class SearchContainer extends StatelessWidget {
   const SearchContainer({
     super.key,
     required this.onSubmitted,
+    required this.onChanged,
   });
 
   final void Function(String?) onSubmitted;
+  final void Function(String?) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +115,7 @@ class SearchContainer extends StatelessWidget {
               minLines: null,
               maxLines: null,
               onSubmitted: onSubmitted,
+              onChanged: onChanged,
               textInputAction: TextInputAction.search,
               decoration: InputDecoration.collapsed(
                 hintStyle: Montserrat.kFontW4.copyWith(

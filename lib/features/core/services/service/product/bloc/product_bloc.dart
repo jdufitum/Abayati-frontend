@@ -58,6 +58,33 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(CartError(error: error));
       }
     });
+    on<StoresEvent>((event, emit) async {
+      emit(StoresLoading());
+      try {
+        final result = await _repository.stores();
+        result.fold((error) => StoreError(error: error), (data) {
+          // globals.cart = data;
+          emit(StoreSuccess(stores: data));
+        });
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(StoreError(error: error));
+      }
+    });
+    on<StoresByCategoryEvent>((event, emit) async {
+      emit(StoresLoading());
+      try {
+        final result = await _repository.storesByCategory(event.id);
+        result.fold((error) => StoreByCategoryError(error: error), (data) {
+          emit(StoreByCategorySuccess(stores: data));
+        });
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(StoreByCategoryError(error: error));
+      }
+    });
     on<CategoryEvent>((event, emit) async {
       emit(ProductLoading());
       try {
