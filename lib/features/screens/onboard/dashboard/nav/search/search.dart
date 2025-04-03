@@ -24,6 +24,12 @@ class SearchAi extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var products = useState(<Product>[]);
+    var focusNode = useFocusNode();
+
+    useEffect((){
+      focusNode.requestFocus();
+      return focusNode.dispose;
+    }, []);
     return Scaffold(
       appBar: showAppBar(context),
       body: SafeArea(
@@ -41,17 +47,23 @@ class SearchAi extends HookWidget {
               // const CustomAppBar(),
               h(21),
               SearchContainer(
+                focusNode: focusNode,
                 onSubmitted: (query) {
-                  if (query!.isNotEmpty) {
+                  if (query!.trim().isNotEmpty) {
                     globals.aiBloc!.add(SearchEvent(query: query.trim()));
-                  } else {
-                    products.value.clear();
+                  }
+                },
+                onChanged: (query) {
+                  if (query!.isEmpty) {
+                    products.value = [];
                   }
                 },
               ),
               h(9),
               if (state is AiLoading)
-                 const Flexible(child: Center(child: CircularProgressIndicator(
+                const Flexible(
+                    child: Center(
+                        child: CircularProgressIndicator(
                   color: AppColor.kB08968,
                 )))
               else if (products.value.isNotEmpty)
@@ -88,9 +100,13 @@ class SearchContainer extends StatelessWidget {
   const SearchContainer({
     super.key,
     required this.onSubmitted,
+    required this.onChanged,
+    required this.focusNode,
   });
 
   final void Function(String?) onSubmitted;
+  final void Function(String?) onChanged;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +124,8 @@ class SearchContainer extends StatelessWidget {
               minLines: null,
               maxLines: null,
               onSubmitted: onSubmitted,
+              onChanged: onChanged,
+              focusNode: focusNode,
               textInputAction: TextInputAction.search,
               decoration: InputDecoration.collapsed(
                 hintStyle: Montserrat.kFontW4.copyWith(

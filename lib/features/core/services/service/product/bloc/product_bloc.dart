@@ -1,10 +1,12 @@
 import 'package:abayati/features/core/model/request/product.dart';
 import 'package:abayati/features/core/model/response/product.dart';
 import 'package:abayati/features/core/services/service/product/repository.dart';
+import 'package:abayati/features/core/services/stripe.dart';
 import 'package:abayati/features/utils/components/app_globals.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import '../../../api/exception/network_exception.dart';
 
@@ -58,6 +60,33 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(CartError(error: error));
       }
     });
+    on<StoresEvent>((event, emit) async {
+      emit(StoresLoading());
+      try {
+        final result = await _repository.stores();
+        result.fold((error) => StoreError(error: error), (data) {
+          // globals.cart = data;
+          emit(StoreSuccess(stores: data));
+        });
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(StoreError(error: error));
+      }
+    });
+    on<StoresByCategoryEvent>((event, emit) async {
+      emit(StoresLoading());
+      try {
+        final result = await _repository.storesByCategory(event.id);
+        result.fold((error) => StoreByCategoryError(error: error), (data) {
+          emit(StoreByCategorySuccess(stores: data));
+        });
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(StoreByCategoryError(error: error));
+      }
+    });
     on<CategoryEvent>((event, emit) async {
       emit(ProductLoading());
       try {
@@ -70,6 +99,24 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         final ex = NetworkExceptions.getDioException(e);
         final error = NetworkExceptions.getErrorMessage(ex);
         emit(CategoryError(error: error));
+      }
+    });
+    on<PaymentsEvent>((event, emit) async {
+      emit(PaymentsLoading());
+      try {
+        final paymentMethodId = await StripeService.instance.createPayment();
+        if (paymentMethodId != null) {
+          final result = await _repository.payments(
+              orderId: event.orderId, paymentMethodId: paymentMethodId);
+          result.fold((error) => PaymentError(error: error),
+              (data) => emit(PaymentSuccess()));
+        } else {
+          emit(const PaymentError(error: 'Something went wrong, try again.'));
+        }
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(PaymentError(error: error));
       }
     });
     on<AddToWishlistEvent>((event, emit) async {
@@ -119,6 +166,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         final error = NetworkExceptions.getErrorMessage(ex);
         emit(RemoveFromCartError(error: error));
       }
+    });
+    on<OrdersEvent>((event, emit) async {
+      emit(OrdersLoading());
+      try {
+        final result = await _repository.orders();
+        result.fold((error) => OrderError(error: error),
+            (data) => emit(OrderSuccess(orders: data)));
+      } catch (e) {
+        final ex = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(ex);
+        emit(OrderError(error: error));
+      } finally {}
     });
   }
 }

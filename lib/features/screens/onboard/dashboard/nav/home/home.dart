@@ -1,5 +1,6 @@
 import 'package:abayati/features/core/model/request/product.dart';
 import 'package:abayati/features/core/services/service/product/bloc/product_bloc.dart';
+import 'package:abayati/features/core/services/stripe.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
 import 'package:abayati/features/utils/app_route.dart';
 import 'package:abayati/features/utils/components/app_globals.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -120,15 +122,10 @@ class _HomeState extends State<Home> {
                                   style: LibreCasion.kFontW7.copyWith(
                                       fontSize: 18.spMin,
                                       color: AppColor.kFCF4F4)),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(context, AppRoute.store);
-                                },
-                                child: const Icon(
-                                  Icons.arrow_forward,
-                                  color: AppColor.kFCF4F4,
-                                  size: 26,
-                                ),
+                              const Icon(
+                                Icons.arrow_forward,
+                                color: AppColor.kFCF4F4,
+                                size: 26,
                               )
                             ],
                           ),
@@ -136,13 +133,14 @@ class _HomeState extends State<Home> {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: globals.category!
-                                  .map((feature) => FeatureTile(
-                                      image: feature.imageUrl!,
-                                      text: feature.name!))
+                                  .map((category) => CategoryTile(
+                                        category: category,
+                                      ))
                                   .toList()),
                         ],
                       ),
                     ),
+
                     h(13),
                     Text('Featured Selections',
                         style:
@@ -413,33 +411,37 @@ class FeatureDetails {
   FeatureDetails({required this.image, required this.text});
 }
 
-class FeatureTile extends StatelessWidget {
-  const FeatureTile({
+class CategoryTile extends StatelessWidget {
+  const CategoryTile({
     super.key,
-    required this.image,
-    required this.text,
+    required this.category,
   });
 
-  final String image;
-  final String text;
+  final Category category;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 56.h,
-          width: 56.w,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                  image: NetworkImage(image), fit: BoxFit.cover)),
-        ),
-        h(4),
-        Text(text,
-            style: Montserrat.kFontW4
-                .copyWith(fontSize: 10.spMin, color: AppColor.k21003D))
-      ],
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, AppRoute.store, arguments: category);
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 56.h,
+            width: 56.w,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: NetworkImage(category.imageUrl!),
+                    fit: BoxFit.cover)),
+          ),
+          h(4),
+          Text(category.name!,
+              style: Montserrat.kFontW4
+                  .copyWith(fontSize: 10.spMin, color: AppColor.k21003D))
+        ],
+      ),
     );
   }
 }

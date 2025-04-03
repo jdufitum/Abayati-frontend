@@ -42,7 +42,7 @@ class AppRoute {
     forgotPassword: (context) => const ForgotPassword(),
     nav: (context) => const Nav(),
     details: (context) => const Details(),
-    store: (context) => const Store(),
+    store: (context) => const StoreView(),
     storeDetails: (context) => const StoreDetails(),
     checkout: (context) => const Checkout(),
     cart: (context) => const CartView(),

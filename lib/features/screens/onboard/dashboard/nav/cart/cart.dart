@@ -33,7 +33,16 @@ class CartView extends HookWidget {
     });
     final showLeading =
         (ModalRoute.settingsOf(context)?.arguments ?? false) as bool;
-    return BlocBuilder<ProductBloc, ProductState>(
+    return BlocConsumer<ProductBloc, ProductState>(
+      listener: (context, state) {
+        if (state is OrderSuccess) {
+          Navigator.pushNamed(context, AppRoute.checkout,
+              arguments: state.orders);
+        }
+        if (state is OrderError) {
+          AppSnackbar.error(context, message: state.error);
+        }
+      },
       bloc: globals.productBloc,
       builder: (context, state) {
         return Scaffold(
@@ -123,8 +132,9 @@ class CartView extends HookWidget {
                 h(30),
                 AppButton(
                     enabled: globals.cart!.isNotEmpty,
+                    loading: state is OrdersLoading,
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoute.checkout);
+                      globals.productBloc!.add(OrdersEvent());
                     },
                     text: 'Pay')
               ],
