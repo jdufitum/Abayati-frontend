@@ -13,6 +13,14 @@ final class CartEvent extends ProductEvent {}
 
 final class StoresEvent extends ProductEvent {}
 
+final class OrdersEvent extends ProductEvent {}
+
+final class PaymentsEvent extends ProductEvent {
+  final String orderId;
+
+  PaymentsEvent({required this.orderId});
+}
+
 final class StoresByCategoryEvent extends ProductEvent {
   final String id;
 

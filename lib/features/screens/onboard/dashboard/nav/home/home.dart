@@ -1,5 +1,6 @@
 import 'package:abayati/features/core/model/request/product.dart';
 import 'package:abayati/features/core/services/service/product/bloc/product_bloc.dart';
+import 'package:abayati/features/core/services/stripe.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
 import 'package:abayati/features/utils/app_route.dart';
 import 'package:abayati/features/utils/components/app_globals.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -138,6 +140,7 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
+
                     h(13),
                     Text('Featured Selections',
                         style:

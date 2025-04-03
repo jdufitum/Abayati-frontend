@@ -67,17 +67,37 @@ class ProductRepository {
     }
   }
 
+  Future<Either<String, Orders>> orders() async {
+    final output = await _datasource.orders();
+    if (output.error != null) {
+      return Left(output.message!);
+    } else {
+      final orders = Orders.fromJson(output.order);
+      return Right(orders);
+    }
+  }
+
+  Future<Either<String, AbstractResponse>> payments(
+      {required String orderId, required String paymentMethodId}) async {
+    final output = await _datasource.payments(
+        orderId: orderId, paymentMethodId: paymentMethodId);
+    if (output.error != null) {
+      return Left(output.message!);
+    } else {
+      return Right(output);
+    }
+  }
+
   Future<Either<String, List<ProductStore>>> storesByCategory(String id) async {
     final output = await _datasource.storesByCategory(id);
-    // if (output.error != null) {
-    //   return Left(output.message!);
-    // }
-    // else {
-      final stores = (output as List)
+    if (output.error != null) {
+      return Left(output.message!);
+    } else {
+      final stores = (output.data as List)
           .map((product) => ProductStore.fromJson(product))
           .toList();
       return Right(stores);
-    // }
+    }
   }
 
   Future<Either<String, AbstractResponse>> addToWishlist(

@@ -1,12 +1,14 @@
 class AbstractResponse {
   final int? status;
   final dynamic data;
+  final dynamic order;
   final String? message;
   final String? error;
 
   AbstractResponse({
     this.status,
     this.data,
+    this.order,
     this.message,
     this.error,
   });
@@ -15,6 +17,7 @@ class AbstractResponse {
       AbstractResponse(
         status: json["status"],
         data: json["data"],
+        order: json["order"],
         message: json["message"],
         error: json["error"],
       );

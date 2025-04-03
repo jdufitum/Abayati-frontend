@@ -26,6 +26,8 @@ class Endpoints {
   static String storesByCategory(String id) => 'getStoresByCategory/$id';
 
   static String get search => 'search';
+  static String get orders => 'orders';
+  static String get payments => 'payments';
 
   static String get removeFromWishlist => 'removeFromWishlist';
 }

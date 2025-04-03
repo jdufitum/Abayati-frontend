@@ -56,11 +56,11 @@ class ProductDatasource {
     }
   }
 
-  Future<dynamic> storesByCategory(String id) async {
+  Future<AbstractResponse> storesByCategory(String id) async {
     try {
       final response = await _client.get(Endpoints.storesByCategory(id));
-      // final output = handleResponse(response);
-      return response.data;
+      final output = handleResponse(response);
+      return output;
     } catch (e) {
       rethrow;
     }
@@ -81,6 +81,28 @@ class ProductDatasource {
     try {
       final response =
           await _client.post(Endpoints.addToCart, data: wishlistDto.toJson());
+      final output = handleResponse(response);
+      return output;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<AbstractResponse> orders() async {
+    try {
+      final response = await _client.post(Endpoints.orders);
+      final output = handleResponse(response);
+      return output;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<AbstractResponse> payments(
+      {required String orderId, required String paymentMethodId}) async {
+    try {
+      final response = await _client.post(Endpoints.payments,
+          data: {"orderId": orderId, "paymentMethodId": paymentMethodId});
       final output = handleResponse(response);
       return output;
     } catch (e) {

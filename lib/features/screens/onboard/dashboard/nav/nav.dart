@@ -93,6 +93,7 @@ class Nav extends StatelessWidget {
       builder: (context, state) {
         return PersistentTabView(
           screenTransitionAnimation: ScreenTransitionAnimation.none(),
+          popAllScreensOnTapAnyTabs: true,
           tabs: [
             PersistentTabConfig(
                 screen: Home(),

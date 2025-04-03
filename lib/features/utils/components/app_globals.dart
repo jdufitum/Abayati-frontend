@@ -4,7 +4,9 @@ import 'package:abayati/features/core/services/service/ai/bloc/ai_bloc.dart';
 import 'package:abayati/features/core/services/service/auth/bloc/auth_bloc.dart';
 import 'package:abayati/features/core/services/service/product/bloc/product_bloc.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
+import 'package:abayati/features/utils/const.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -77,7 +79,6 @@ AppGlobals globals = getIt.get<AppGlobals>();
 
 Future<void> initSingletons() async {
   getIt.registerLazySingleton<AppGlobals>(() => AppGlobals());
-
   await dotenv.load();
   await globals.init();
 }

@@ -7,7 +7,6 @@ class AppSnackbar {
         elevation: 0,
         backgroundColor: Colors.transparent,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(milliseconds: 1000),
         content: AwesomeSnackbarContent(
             title: 'Error',
             message: message,
@@ -22,7 +21,6 @@ class AppSnackbar {
         elevation: 0,
         backgroundColor: Colors.transparent,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(milliseconds: 1000),
         content: AwesomeSnackbarContent(
             title: 'Success',
             message: message,
