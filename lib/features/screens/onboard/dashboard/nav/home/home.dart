@@ -60,7 +60,8 @@ class _HomeState extends State<Home> {
           },
           builder: (context, productState) {
             return Skeletonizer(
-              enabled: productState is ProductLoading && globals.allProducts!.isEmpty,
+              enabled: productState is ProductLoading &&
+                  globals.allProducts!.isEmpty,
               child: BlocBuilder<HomeCubit, HomeState>(
                 bloc: globals.homeCubit,
                 builder: (context, state) {
@@ -184,10 +185,10 @@ class _HomeState extends State<Home> {
                         Flexible(
                             child: Center(
                                 child: Skeleton.shade(
-                                  shade: productState is ProductLoading && globals.allProducts!.isEmpty,
-                                  child: Text('No product to view',
-                                      style: Montserrat.kFontW6),
-                                ))),
+                          shade: productState is ProductLoading &&
+                              globals.allProducts!.isEmpty,
+                          child: Text('', style: Montserrat.kFontW6),
+                        ))),
 
                       h(13),
                       // Text('Selections Made for You',

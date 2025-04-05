@@ -143,10 +143,7 @@ class Details extends HookWidget {
                     ),
                     const HDivider(),
                     AppButton(
-                      onPressed: () {
-                        AppLoader.show(context);
-                        // AppSnackbar.success(context, message: 'message');x
-                      },
+                      onPressed: () {},
                       text: 'Virtual Try On',
                       buttonColor: AppColor.kD2BFC1,
                       fontStyle: FontStyle.italic,
