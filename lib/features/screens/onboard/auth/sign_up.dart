@@ -4,6 +4,7 @@ import 'package:abayati/features/utils/components/app_globals.dart';
 import 'package:abayati/features/utils/components/app_snackbar.dart';
 import 'package:abayati/features/utils/components/loader.dart';
 import 'package:abayati/features/utils/extension.dart';
+import 'package:abayati/features/utils/validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,9 @@ class SignUp extends HookWidget {
     final usernameCtrl = useTextEditingController();
     final emailCtrl = useTextEditingController();
     final passwordCtrl = useTextEditingController();
+    final confirmPasswordCtrl = useTextEditingController();
+
+    final form = useState(GlobalKey<FormState>());
     return Scaffold(
       body: SafeArea(
           child: SingleChildScrollView(
@@ -47,73 +51,84 @@ class SignUp extends HookWidget {
             }
           },
           builder: (context, state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                h(19),
-                Text('Create an\naccount',
-                    style: Montserrat.kFontW7.copyWith(fontSize: 36.spMin)),
-                h(36),
-                AppTextField(
-                  controller: usernameCtrl,
-                  hintText: 'Username',
-                  prefixIcon:
-                      SvgPicture.asset(Vectors.user, fit: BoxFit.scaleDown),
-                ),
-                h(31),
-                AppTextField(
-                  controller: emailCtrl,
-                  hintText: 'Email',
-                  prefixIcon:
-                      SvgPicture.asset(Vectors.user, fit: BoxFit.scaleDown),
-                ),
-                h(31),
-                AppTextField(
-                  controller: passwordCtrl,
-                  hintText: 'Password',
-                  isPassword: true,
-                  prefixIcon:
-                      SvgPicture.asset(Vectors.lock, fit: BoxFit.scaleDown),
-                ),
-                h(31),
-                AppTextField(
-                  controller: passwordCtrl,
-                  hintText: 'Confirm Password',
-                  isPassword: true,
-                  prefixIcon:
-                      SvgPicture.asset(Vectors.lock, fit: BoxFit.scaleDown),
-                ),
-                h(31),
-                AppButton(
-                    onPressed: () {
-                      globals.authBloc!.add(RegisterEvent(
-                          registerDto: RegisterDto(
-                              username: usernameCtrl.text,
-                              email: emailCtrl.text,
-                              password: passwordCtrl.text)));
-                    },
-                    text: 'Create Account'),
-                h(8),
-                Text.rich(
-                    TextSpan(
-                        text: 'I Already Have an Account ',
-                        style: Montserrat.kFontW4
-                            .copyWith(color: AppColor.k575757),
-                        children: [
-                          TextSpan(
-                              text: 'Login',
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  Navigator.pushNamed(context, AppRoute.signIn);
-                                },
-                              style: Montserrat.kFontW6.copyWith(
-                                  color: AppColor.kA89294,
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: AppColor.k9C6644,
-                                  decorationStyle: TextDecorationStyle.solid))
-                        ]),
-                    textAlign: TextAlign.center),
-              ],
+            return Form(
+              key: form.value,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  h(19),
+                  Text('Create an\naccount',
+                      style: Montserrat.kFontW7.copyWith(fontSize: 36.spMin)),
+                  h(36),
+                  AppTextField(
+                    controller: usernameCtrl,
+                    hintText: 'Username',
+                    prefixIcon:
+                        SvgPicture.asset(Vectors.user, fit: BoxFit.scaleDown),
+                    validator: (val) => Validator.validateName(val!),
+                  ),
+                  h(31),
+                  AppTextField(
+                    controller: emailCtrl,
+                    hintText: 'Email',
+                    prefixIcon:
+                        SvgPicture.asset(Vectors.user, fit: BoxFit.scaleDown),
+                    validator: (val) => Validator.validateEmail(val!),
+                  ),
+                  h(31),
+                  AppTextField(
+                    controller: passwordCtrl,
+                    hintText: 'Password',
+                    isPassword: true,
+                    prefixIcon:
+                        SvgPicture.asset(Vectors.lock, fit: BoxFit.scaleDown),
+                    validator: (val) => Validator.validatePassword(val!),
+                  ),
+                  h(31),
+                  AppTextField(
+                    controller: confirmPasswordCtrl,
+                    hintText: 'Confirm Password',
+                    isPassword: true,
+                    prefixIcon:
+                        SvgPicture.asset(Vectors.lock, fit: BoxFit.scaleDown),
+                    validator: (val) => Validator.validateConfirmPassword(val!,
+                        toMatch: passwordCtrl.text.trim()),
+                  ),
+                  h(31),
+                  AppButton(
+                      onPressed: () {
+                        if (form.value.currentState!.validate()) {
+                          globals.authBloc!.add(RegisterEvent(
+                              registerDto: RegisterDto(
+                                  username: usernameCtrl.text.trim(),
+                                  email: emailCtrl.text.trim(),
+                                  password: passwordCtrl.text.trim())));
+                        }
+                      },
+                      text: 'Create Account'),
+                  h(8),
+                  Text.rich(
+                      TextSpan(
+                          text: 'I Already Have an Account ',
+                          style: Montserrat.kFontW4
+                              .copyWith(color: AppColor.k575757),
+                          children: [
+                            TextSpan(
+                                text: 'Login',
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.pushNamed(
+                                        context, AppRoute.signIn);
+                                  },
+                                style: Montserrat.kFontW6.copyWith(
+                                    color: AppColor.kA89294,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: AppColor.k9C6644,
+                                    decorationStyle: TextDecorationStyle.solid))
+                          ]),
+                      textAlign: TextAlign.center),
+                ],
+              ),
             );
           },
         ).hPad,

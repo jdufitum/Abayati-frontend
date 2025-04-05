@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../utils/app_color.dart';
+import '../../../../../utils/app_route.dart';
 import '../../../../../utils/constants.dart';
+import 'measure.dart';
 
 class ViewMeasurement extends StatelessWidget {
   const ViewMeasurement({super.key});
@@ -27,42 +29,70 @@ class ViewMeasurement extends StatelessWidget {
                       color: AppColor.white,
                       borderRadius: BorderRadius.circular(1.r),
                       border: Border.all(color: AppColor.kA89294)),
-                  child: ListView(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('${globals.user!.username}’s Measurements',
                           style:
                               Montserrat.kFontW7.copyWith(fontSize: 18.spMin)),
                       h(7),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Measurement',
-                              style: Montserrat.kFontW7.copyWith(
-                                  fontSize: 16.spMin, color: AppColor.k656565)),
-                          Text('Inch',
-                              style: Montserrat.kFontW7.copyWith(
-                                  fontSize: 16.spMin, color: AppColor.k656565)),
-                        ],
-                      ),
-                      h(7),
-                      ...measurements(globals.measurement).entries.toList().map(
-                            (e) => Padding(
-                              padding: EdgeInsets.only(bottom: 12.0.h),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(e.key,
-                                      style: Montserrat.kFontW4
-                                          .copyWith(fontSize: 16.spMin)),
-                                  Text(e.value,
-                                      style: Montserrat.kFontW4
-                                          .copyWith(fontSize: 16.spMin)),
-                                ],
-                              ),
+                      if (globals.measurement?.id != null)
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Measurement',
+                                    style: Montserrat.kFontW7.copyWith(
+                                        fontSize: 16.spMin,
+                                        color: AppColor.k656565)),
+                                Text('Inch',
+                                    style: Montserrat.kFontW7.copyWith(
+                                        fontSize: 16.spMin,
+                                        color: AppColor.k656565)),
+                              ],
                             ),
-                          )
+                            h(7),
+                            ...measurements(globals.measurement)
+                                .entries
+                                .toList()
+                                .map(
+                                  (e) => Padding(
+                                    padding: EdgeInsets.only(bottom: 12.0.h),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(e.key,
+                                            style: Montserrat.kFontW4
+                                                .copyWith(fontSize: 16.spMin)),
+                                        Text(e.value,
+                                            style: Montserrat.kFontW4
+                                                .copyWith(fontSize: 16.spMin)),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                          ],
+                        )
+                      else
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text('You currently have no saved measurement',
+                                  style: Montserrat.kFontW5),
+                              h(30),
+                              MeasureButton(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, AppRoute.checkMeasurement);
+                                  },
+                                  text: 'Check\nMeasurement'),
+                            ],
+                          ),
+                        ),
                     ],
                   )),
             ),

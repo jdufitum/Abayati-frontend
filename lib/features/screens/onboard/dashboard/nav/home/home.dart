@@ -2,6 +2,7 @@ import 'package:abayati/features/core/model/request/product.dart';
 import 'package:abayati/features/core/services/service/ai/bloc/ai_bloc.dart';
 import 'package:abayati/features/core/services/service/product/bloc/product_bloc.dart';
 import 'package:abayati/features/core/services/stripe.dart';
+import 'package:abayati/features/screens/onboard/dashboard/nav/home/state/home_cubit.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
 import 'package:abayati/features/utils/app_route.dart';
 import 'package:abayati/features/utils/components/app_globals.dart';
@@ -53,137 +54,163 @@ class _HomeState extends State<Home> {
                 globals.wishlistCubit!.initWishlist(product);
               }
             }
+            if (state is AllProductSuccess) {
+              globals.homeCubit!.initProduct();
+            }
           },
-          builder: (context, state) {
-            return SingleChildScrollView(
-              child: Skeletonizer(
-                enabled:
-                    state is ProductLoading && globals.allProducts!.isEmpty,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // h(12),
-                    // const CustomAppBar(),
-                    // h(21),
-                    const AppSearchField(),
-                    // h(28),
-                    // Row(
-                    //   children: [
-                    //     Text('All Featured',
-                    //         style: Montserrat.kFontW6.copyWith(fontSize: 18.spMin)),
-                    //     const Spacer(),
-                    //     Container(
-                    //       padding:
-                    //           EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
-                    //       decoration: BoxDecoration(
-                    //           color: AppColor.white,
-                    //           borderRadius: BorderRadius.circular(6.r)),
-                    //       child: Row(
-                    //         children: [
-                    //           Text('Sort',
-                    //               style: Montserrat.kFontW4
-                    //                   .copyWith(fontSize: 12.spMin)),
-                    //           w(4),
-                    //           SvgPicture.asset(Vectors.sort)
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     w(12),
-                    //     Container(
-                    //       padding:
-                    //           EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
-                    //       decoration: BoxDecoration(
-                    //           color: AppColor.white,
-                    //           borderRadius: BorderRadius.circular(6.r)),
-                    //       child: Row(
-                    //         children: [
-                    //           Text('Filter',
-                    //               style: Montserrat.kFontW4
-                    //                   .copyWith(fontSize: 12.spMin)),
-                    //           w(4),
-                    //           SvgPicture.asset(Vectors.filt)
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     w(11)
-                    //   ],
-                    // ),
-                    h(18),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                      decoration: BoxDecoration(
-                          color: AppColor.kA89294,
-                          borderRadius: BorderRadius.circular(10.r)),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('What are you Looking For',
-                                  style: LibreCasion.kFontW7.copyWith(
-                                      fontSize: 18.spMin,
-                                      color: AppColor.kFCF4F4)),
-                              const Icon(
-                                Icons.arrow_forward,
-                                color: AppColor.kFCF4F4,
-                                size: 26,
-                              )
-                            ],
-                          ),
-                          h(7),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: globals.category!
-                                  .map((category) => CategoryTile(
-                                        category: category,
-                                      ))
-                                  .toList()),
-                        ],
-                      ),
-                    ),
-
-                    h(13),
-                    Text('Featured Selections',
-                        style:
-                            LibreCasion.kFontW7.copyWith(fontSize: 18.spMin)),
-                    h(15),
-
-                    if (globals.allProducts!.isNotEmpty)
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisExtent: 240.h,
-                            mainAxisSpacing: 10.h,
-                            crossAxisSpacing: 15.w),
-                        itemBuilder: (context, index) {
-                          final product = globals.allProducts![index];
-                          return ItemCard(product: product);
+          builder: (context, productState) {
+            return Skeletonizer(
+              enabled: productState is ProductLoading &&
+                  globals.allProducts!.isEmpty,
+              child: BlocBuilder<HomeCubit, HomeState>(
+                bloc: globals.homeCubit,
+                builder: (context, state) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // h(12),
+                      // const CustomAppBar(),
+                      // h(21),
+                      AppSearchField(
+                        onChanged: (query) {
+                          globals.homeCubit!.setQuery(query);
                         },
-                        itemCount: globals.allProducts!.length,
+                      ),
+                      // h(28),
+                      // Row(
+                      //   children: [
+                      //     Text('All Featured',
+                      //         style: Montserrat.kFontW6.copyWith(fontSize: 18.spMin)),
+                      //     const Spacer(),
+                      //     Container(
+                      //       padding:
+                      //           EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+                      //       decoration: BoxDecoration(
+                      //           color: AppColor.white,
+                      //           borderRadius: BorderRadius.circular(6.r)),
+                      //       child: Row(
+                      //         children: [
+                      //           Text('Sort',
+                      //               style: Montserrat.kFontW4
+                      //                   .copyWith(fontSize: 12.spMin)),
+                      //           w(4),
+                      //           SvgPicture.asset(Vectors.sort)
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     w(12),
+                      //     Container(
+                      //       padding:
+                      //           EdgeInsets.symmetric(vertical: 4.h, horizontal: 8.w),
+                      //       decoration: BoxDecoration(
+                      //           color: AppColor.white,
+                      //           borderRadius: BorderRadius.circular(6.r)),
+                      //       child: Row(
+                      //         children: [
+                      //           Text('Filter',
+                      //               style: Montserrat.kFontW4
+                      //                   .copyWith(fontSize: 12.spMin)),
+                      //           w(4),
+                      //           SvgPicture.asset(Vectors.filt)
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     w(11)
+                      //   ],
+                      // ),
+                      h(18),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.h, horizontal: 8.w),
+                        decoration: BoxDecoration(
+                            color: AppColor.kA89294,
+                            borderRadius: BorderRadius.circular(10.r)),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('What are you Looking For',
+                                    style: LibreCasion.kFontW7.copyWith(
+                                        fontSize: 18.spMin,
+                                        color: AppColor.kFCF4F4)),
+                                const Icon(
+                                  Icons.arrow_forward,
+                                  color: AppColor.kFCF4F4,
+                                  size: 26,
+                                )
+                              ],
+                            ),
+                            h(7),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: globals.category!
+                                    .map((category) => CategoryTile(
+                                          category: category,
+                                        ))
+                                    .toList()),
+                          ],
+                        ),
                       ),
 
-                    h(13),
-                    // Text('Selections Made for You',
-                    //     style: LibreCasion.kFontW7.copyWith(fontSize: 18.spMin)),
-                    // h(15),
-                    // GridView.builder(
-                    //   shrinkWrap: true,
-                    //   physics: const NeverScrollableScrollPhysics(),
-                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //       crossAxisCount: 2,
-                    //       mainAxisExtent: 240.h,
-                    //       mainAxisSpacing: 10.h,
-                    //       crossAxisSpacing: 15.w),
-                    //   itemBuilder: (context, index) => const ItemCard(),
-                    //   itemCount: 4,
-                    // ),
-                    h(20)
-                  ],
-                ).hPad,
-              ),
+                      h(13),
+                      Text('Featured Selections',
+                          style:
+                              LibreCasion.kFontW7.copyWith(fontSize: 18.spMin)),
+                      h(15),
+
+                      if (state.filteredProduct.isNotEmpty)
+                        Flexible(
+                          child: BlocBuilder<HomeCubit, HomeState>(
+                            bloc: globals.homeCubit,
+                            builder: (context, state) {
+                              return GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisExtent: 240.h,
+                                        mainAxisSpacing: 10.h,
+                                        crossAxisSpacing: 15.w),
+                                itemBuilder: (context, index) {
+                                  final product = state.filteredProduct[index];
+                                  return ItemCard(product: product);
+                                },
+                                itemCount: state.filteredProduct.length,
+                              );
+                            },
+                          ),
+                        )
+                      else
+                        Flexible(
+                            child: Center(
+                                child: Skeleton.shade(
+                          shade: productState is ProductLoading &&
+                              state.filteredProduct.isEmpty,
+                          child: Text('No product to view',
+                              style: Montserrat.kFontW6),
+                        ))),
+
+                      h(13),
+                      // Text('Selections Made for You',
+                      //     style: LibreCasion.kFontW7.copyWith(fontSize: 18.spMin)),
+                      // h(15),
+                      // GridView.builder(
+                      //   shrinkWrap: true,
+                      //   physics: const NeverScrollableScrollPhysics(),
+                      //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      //       crossAxisCount: 2,
+                      //       mainAxisExtent: 240.h,
+                      //       mainAxisSpacing: 10.h,
+                      //       crossAxisSpacing: 15.w),
+                      //   itemBuilder: (context, index) => const ItemCard(),
+                      //   itemCount: 4,
+                      // ),
+                      // h(20)
+                    ],
+                  );
+                },
+              ).hPad,
             );
           },
         ),
@@ -195,7 +222,10 @@ class _HomeState extends State<Home> {
 class AppSearchField extends StatelessWidget {
   const AppSearchField({
     super.key,
+    this.onChanged,
   });
+
+  final void Function(String?)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +243,7 @@ class AppSearchField extends StatelessWidget {
               Montserrat.kFontW4.copyWith(color: AppColor.kBBBBBB),
           prefixIcon: SvgPicture.asset(Vectors.search),
           prefixInsets: EdgeInsetsDirectional.fromSTEB(16.w, 8.h, 0, 8.h),
+          onChanged: onChanged,
         ),
         Positioned(
             top: 0,

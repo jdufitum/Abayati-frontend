@@ -4,10 +4,9 @@ import 'package:abayati/features/core/model/response/product.dart';
 import 'package:abayati/features/core/services/service/ai/bloc/ai_bloc.dart';
 import 'package:abayati/features/core/services/service/auth/bloc/auth_bloc.dart';
 import 'package:abayati/features/core/services/service/product/bloc/product_bloc.dart';
+import 'package:abayati/features/screens/onboard/dashboard/nav/home/state/home_cubit.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
-import 'package:abayati/features/utils/const.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -41,6 +40,7 @@ class AppGlobals {
   AiBloc? aiBloc;
 
   WishlistCubit? wishlistCubit;
+  HomeCubit? homeCubit;
 
   Future<void> init() async {
     if (sharedPreferences == null) {
@@ -62,6 +62,8 @@ class AppGlobals {
     authBloc = AuthBloc();
     productBloc = ProductBloc();
     aiBloc = AiBloc();
+
+    homeCubit = HomeCubit();
 
     wishlistCubit = WishlistCubit();
   }

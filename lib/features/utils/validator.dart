@@ -49,6 +49,15 @@ class Validator {
     }
   }
 
+  static String? validateConfirmPassword(String value,
+      {required String toMatch}) {
+    if (toMatch != value) {
+      return 'Password must match';
+    } else {
+      return null;
+    }
+  }
+
   static String? validateName(String value) {
     if (value.length < 3) {
       return 'Name is too short';
