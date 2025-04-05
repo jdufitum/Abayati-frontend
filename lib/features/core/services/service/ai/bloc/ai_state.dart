@@ -9,6 +9,8 @@ sealed class AiState extends Equatable {
 final class AiInitial extends AiState {}
 
 final class AiLoading extends AiState {}
+final class SearchLoading extends AiState {}
+final class GetMeasurementLoading extends AiState {}
 
 final class SearchSuccess extends AiState {
   final List<Product> products;

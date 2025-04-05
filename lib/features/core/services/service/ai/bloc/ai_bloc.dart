@@ -19,7 +19,7 @@ class AiBloc extends Bloc<AiEvent, AiState> {
 
   AiBloc() : super(AiInitial()) {
     on<SearchEvent>((event, emit) async {
-      emit(AiLoading());
+      emit(SearchLoading());
       try {
         final result = await _repository.search(event.query);
         result.fold((error) => emit(SearchError(error: error)),
@@ -31,7 +31,7 @@ class AiBloc extends Bloc<AiEvent, AiState> {
       }
     });
     on<GetMeasurementEvent>((event, emit) async {
-      emit(AiLoading());
+      emit(GetMeasurementLoading());
       try {
         final result = await _repository.getMeasurement();
         result.fold((error) => emit(GetMeasurementError(error: error)), (data) {

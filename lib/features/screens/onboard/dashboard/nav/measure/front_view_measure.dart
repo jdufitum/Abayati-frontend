@@ -4,6 +4,7 @@ import 'package:abayati/assets/resources.dart';
 import 'package:abayati/features/utils/app_route.dart';
 import 'package:abayati/features/utils/components/app_globals.dart';
 import 'package:abayati/features/utils/components/app_snackbar.dart';
+import 'package:abayati/features/utils/components/loader.dart';
 import 'package:abayati/features/utils/extension.dart';
 import 'package:abayati/features/utils/helper.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,13 @@ class SideViewMeasure extends StatelessWidget {
           child: BlocConsumer<AiBloc, AiState>(
         bloc: globals.aiBloc,
         listener: (context, state) {
+          if (state is AiLoading) {
+            AppLoader.show(context);
+          } else {
+            AppLoader.hide();
+          }
           if (state is CreateMeasurementSuccess) {
+            globals.aiBloc!.add(GetMeasurementEvent());
             Navigator.pushNamed(context, AppRoute.completeMeasure);
           }
           if (state is CreateMeasurementError) {

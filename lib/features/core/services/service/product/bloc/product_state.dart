@@ -15,6 +15,8 @@ final class ProductLoading extends ProductState {}
 final class StoresLoading extends ProductState {}
 
 final class OrdersLoading extends ProductState {}
+
+
 final class PaymentsLoading extends ProductState {}
 
 final class AllProductSuccess extends ProductState {
@@ -41,8 +43,7 @@ final class CategoryError extends ProductState {
   const CategoryError({required this.error});
 }
 
-final class PaymentSuccess extends ProductState {
-}
+final class PaymentSuccess extends ProductState {}
 
 final class PaymentError extends ProductState {
   final String error;
