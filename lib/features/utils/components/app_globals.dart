@@ -7,12 +7,14 @@ import 'package:abayati/features/core/services/service/product/bloc/product_bloc
 import 'package:abayati/features/screens/onboard/dashboard/nav/home/state/home_cubit.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/db/storage.dart';
+import '../const.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -85,6 +87,8 @@ AppGlobals globals = getIt.get<AppGlobals>();
 
 Future<void> initSingletons() async {
   getIt.registerLazySingleton<AppGlobals>(() => AppGlobals());
+  Stripe.publishableKey = stripePublishableKey;
+  await Stripe.instance.applySettings();
   await dotenv.load();
   await globals.init();
 }

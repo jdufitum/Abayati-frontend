@@ -41,7 +41,8 @@ class SignIn extends HookWidget {
               AppLoader.hide();
             }
             if (state is LoginSuccess) {
-              Navigator.pushNamed(context, AppRoute.nav);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AppRoute.nav, (route) => false);
             }
             if (state is LoginError) {
               AppSnackbar.error(context, message: state.error);

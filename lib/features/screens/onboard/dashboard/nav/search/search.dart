@@ -60,7 +60,7 @@ class SearchAi extends HookWidget {
                 },
               ),
               h(9),
-              if (state is AiLoading)
+              if (state is SearchLoading)
                 const Flexible(
                     child: Center(
                         child: CircularProgressIndicator(
