@@ -107,8 +107,8 @@ class ApiClient {
     }
   }
 
-  Future<Response> sendFormData({
-    required String url,
+  Future<Response> sendFormData(
+    String url, {
     required FormData formData,
   }) async {
     try {

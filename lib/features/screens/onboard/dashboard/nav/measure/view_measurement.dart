@@ -1,3 +1,5 @@
+import 'package:abayati/features/core/model/response/measurement.dart';
+import 'package:abayati/features/utils/components/app_globals.dart';
 import 'package:abayati/features/utils/extension.dart';
 import 'package:abayati/features/utils/text_style.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +30,7 @@ class ViewMeasurement extends StatelessWidget {
                   child: ListView(
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Jennifer’s Measurements',
+                      Text('${globals.user!.username}’s Measurements',
                           style:
                               Montserrat.kFontW7.copyWith(fontSize: 18.spMin)),
                       h(7),
@@ -44,7 +46,7 @@ class ViewMeasurement extends StatelessWidget {
                         ],
                       ),
                       h(7),
-                      ...measurements.entries.toList().map(
+                      ...measurements(globals.measurement).entries.toList().map(
                             (e) => Padding(
                               padding: EdgeInsets.only(bottom: 12.0.h),
                               child: Row(
@@ -72,20 +74,20 @@ class ViewMeasurement extends StatelessWidget {
   }
 }
 
-Map<String, String> measurements = {
-  'Neck': '15',
-  'Shoulder Width': '34',
-  'Chest': '12',
-  'Waist': '34',
-  'Hips': '9',
-  'Bust': '12',
-  'Arm Length': '21',
-  'Bicep': '13',
-  'Wrist': '43',
-  'Back Length': '10',
-  'Front Length': '23',
-  'Rise': '18',
-  'Inseam': '92',
-  'Outseam': '54',
-  'Thigh': '22',
-};
+Map<String, String> measurements(Measurement? measurement) => {
+      'Neck': measurement!.volumeParams!.neck.toString(),
+      'Shoulder Width': measurement.frontParams!.backShoulderWidth.toString(),
+      'Chest': measurement.volumeParams!.chest.toString(),
+      'Waist': measurement.volumeParams!.waist.toString(),
+      'Hips': measurement.volumeParams!.highHips.toString(),
+      'Bust': measurement.frontParams!.bustHeight.toString(),
+      'Arm Length': measurement.volumeParams!.forearm.toString(),
+      'Bicep': measurement.volumeParams!.bicep.toString(),
+      'Wrist': measurement.volumeParams!.wrist.toString(),
+      'Back Length': measurement.frontParams!.backNeckToHipLength.toString(),
+      'Front Length': measurement.frontParams!.frontCrotchLength.toString(),
+      'Rise': measurement.frontParams!.rise.toString(),
+      'Inseam': measurement.frontParams!.inseam.toString(),
+      'Outseam': measurement.frontParams!.outseam.toString(),
+      'Thigh': measurement.volumeParams!.thigh.toString(),
+    };

@@ -3,16 +3,36 @@ import 'package:abayati/features/utils/app_route.dart';
 import 'package:abayati/features/utils/extension.dart';
 import 'package:abayati/features/utils/text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/widgets/app_button.dart';
 
-class CheckMeasurement extends StatelessWidget {
+class CheckMeasurement extends HookWidget {
   const CheckMeasurement({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final heightCtrl = useTextEditingController();
+    final weightCtrl = useTextEditingController();
+
+    final isFormValid = useState(false);
+
+    useEffect(() {
+      void listener() {
+        isFormValid.value =
+            heightCtrl.text.isNotEmpty && weightCtrl.text.isNotEmpty;
+      }
+
+      heightCtrl.addListener(listener);
+      weightCtrl.addListener(listener);
+      return () {
+        heightCtrl.removeListener(listener);
+        weightCtrl.removeListener(listener);
+      };
+    });
+
     return Scaffold(
       body: SafeArea(
           child:
@@ -41,17 +61,22 @@ class CheckMeasurement extends StatelessWidget {
                       style: Montserrat.kFontW5.copyWith(fontSize: 32.spMin)),
                   h(50),
                   MeasureField(
-                      controller: TextEditingController(),
-                      label: 'Enter your height (cm)'),
+                      controller: heightCtrl, label: 'Enter your height (cm)'),
                   h(16),
                   MeasureField(
-                      controller: TextEditingController(),
-                      label: 'Enter your weight (kg)'),
+                      controller: weightCtrl, label: 'Enter your weight (kg)'),
                   h(7),
                   const Spacer(),
-                  AppButton(onPressed: () {
-                    Navigator.pushNamed(context, AppRoute.frontViewMeasure);
-                  }, text: 'Next')
+                  AppButton(
+                      enabled: isFormValid.value,
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoute.frontViewMeasure,
+                            arguments: {
+                              'height': heightCtrl.text.trim(),
+                              'width': weightCtrl.text.trim()
+                            });
+                      },
+                      text: 'Next')
                 ],
               )).eHPad(6),
         ),

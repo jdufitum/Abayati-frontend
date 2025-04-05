@@ -74,10 +74,6 @@ abstract class NetworkExceptions with _$NetworkExceptions {
                   NetworkExceptions.notFound(error.response!.data['message']);
             }
           }
-          // else {
-          //   networkExceptions = NetworkExceptions.notFound(
-          //       error.response!.data['error'] ?? 'Unknown error');
-          // }
           else {
             if (error.response!.data.runtimeType is! String) {
               networkExceptions = NetworkExceptions.notFound(

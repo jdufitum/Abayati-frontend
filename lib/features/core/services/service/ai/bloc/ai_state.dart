@@ -21,3 +21,23 @@ final class SearchError extends AiState {
 
   SearchError({required this.error});
 }
+
+final class GetMeasurementSuccess extends AiState {
+  final Measurement measurement;
+
+  GetMeasurementSuccess({required this.measurement});
+}
+
+final class GetMeasurementError extends AiState {
+  final String error;
+
+  GetMeasurementError({required this.error});
+}
+
+final class CreateMeasurementSuccess extends AiState {}
+
+final class CreateMeasurementError extends AiState {
+  final String error;
+
+  CreateMeasurementError({required this.error});
+}

@@ -1,4 +1,5 @@
 import 'package:abayati/features/core/model/request/product.dart';
+import 'package:abayati/features/core/services/service/ai/bloc/ai_bloc.dart';
 import 'package:abayati/features/core/services/service/product/bloc/product_bloc.dart';
 import 'package:abayati/features/core/services/stripe.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/state/wishlist_cubit.dart';
@@ -38,6 +39,7 @@ class _HomeState extends State<Home> {
       globals.productBloc!.add(WishlistEvent());
       globals.productBloc!.add(CategoryEvent());
       globals.productBloc!.add(CartEvent());
+      globals.aiBloc!.add(GetMeasurementEvent());
       return null;
     });
     return Scaffold(

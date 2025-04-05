@@ -31,6 +31,7 @@ class Checkout extends HookWidget {
         bloc: globals.productBloc,
         listener: (context, state) {
           if (state is PaymentSuccess) {
+            globals.productBloc!.add(CartEvent());
             showSuccessDialog(context);
           }
           if (state is PaymentError) {

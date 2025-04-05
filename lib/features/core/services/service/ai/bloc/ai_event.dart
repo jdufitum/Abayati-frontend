@@ -8,3 +8,18 @@ final class SearchEvent extends AiEvent {
 
   SearchEvent({required this.query});
 }
+
+final class GetMeasurementEvent extends AiEvent {}
+
+final class CreateMeasurementEvent extends AiEvent {
+  final String height;
+  final String width;
+  final File frontImage;
+  final File sideImage;
+
+  CreateMeasurementEvent(
+      {required this.height,
+      required this.width,
+      required this.frontImage,
+      required this.sideImage});
+}

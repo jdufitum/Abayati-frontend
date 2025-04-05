@@ -1,4 +1,5 @@
 import 'package:abayati/features/core/model/response/auth.dart';
+import 'package:abayati/features/core/model/response/measurement.dart';
 import 'package:abayati/features/core/model/response/product.dart';
 import 'package:abayati/features/core/services/service/ai/bloc/ai_bloc.dart';
 import 'package:abayati/features/core/services/service/auth/bloc/auth_bloc.dart';
@@ -33,6 +34,7 @@ class AppGlobals {
   List<Product>? wishlist;
   List<Category>? category;
   List<Cart>? cart;
+  Measurement? measurement;
 
   AuthBloc? authBloc;
   ProductBloc? productBloc;
@@ -51,6 +53,7 @@ class AppGlobals {
 
     token = '';
     user = User();
+    measurement = Measurement();
     allProducts = [];
     wishlist = [];
     category = [];
@@ -70,6 +73,7 @@ class AppGlobals {
     wishlist = null;
     category = null;
     cart = null;
+    measurement = null;
 
     sharedPreferences?.clear();
   }
