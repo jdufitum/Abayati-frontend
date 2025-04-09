@@ -53,4 +53,21 @@ class AIDatasource {
       rethrow;
     }
   }
+
+  Future<AbstractResponse> virtualTryon(
+      {required String clothId, required File humanImage}) async {
+    try {
+      final response = await _client.sendFormData(Endpoints.virtualTryon,
+          formData: FormData.fromMap({
+            'clothId': clothId,
+            'humanImage': await MultipartFile.fromFile(humanImage.path,
+                filename: humanImage.path.split('/').last),
+          }));
+      print('Virtual try on -----------> ${response.data}');
+      final output = handleResponse(response);
+      return output;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

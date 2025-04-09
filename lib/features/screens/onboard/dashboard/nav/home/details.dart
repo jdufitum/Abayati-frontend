@@ -1,14 +1,13 @@
-import 'dart:math';
+import 'dart:io';
 
 import 'package:abayati/features/core/model/response/product.dart';
+import 'package:abayati/features/core/services/service/ai/bloc/ai_bloc.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/setting/setting.dart';
-import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/wishlist.dart';
-import 'package:abayati/features/screens/onboard/dashboard/nav/wishlist/wishlist.dart';
 import 'package:abayati/features/utils/app_route.dart';
 import 'package:abayati/features/utils/components/app_globals.dart';
 import 'package:abayati/features/utils/components/app_snackbar.dart';
-import 'package:abayati/features/utils/components/loader.dart';
 import 'package:abayati/features/utils/extension.dart';
+import 'package:abayati/features/utils/helper.dart';
 import 'package:abayati/features/utils/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -142,11 +141,38 @@ class Details extends HookWidget {
                           .toList(),
                     ),
                     const HDivider(),
-                    AppButton(
-                      onPressed: () {},
-                      text: 'Virtual Try On',
-                      buttonColor: AppColor.kD2BFC1,
-                      fontStyle: FontStyle.italic,
+                    BlocConsumer<AiBloc, AiState>(
+                      bloc: globals.aiBloc,
+                      listener: (context, state) {
+                        if (state is VirtualTryonSuccess) {
+                          Navigator.pushNamed(context, AppRoute.virtualResult,
+                              arguments: state
+                                  .virtualTryonRsp.taskResult.images.first.url);
+                        }
+                        if (state is VirtualTryonError) {
+                          AppSnackbar.error(context,
+                              message: 'Request time out');
+                        }
+                      },
+                      builder: (context, state) {
+                        return AppButton(
+                          loading: state is AiLoading,
+                          onPressed: () async {
+                            final image = await Helper.getImage();
+                            if (image != null) {
+                              globals.aiBloc!.add(VirtualTryonEvent(
+                                  clothId: product.id!,
+                                  humanImage: File(image.path)));
+                            } else {
+                              AppSnackbar.error(context,
+                                  message: 'No image picked');
+                            }
+                          },
+                          text: 'Virtual Try On',
+                          buttonColor: AppColor.kD2BFC1,
+                          fontStyle: FontStyle.italic,
+                        );
+                      },
                     ),
                     const HDivider(),
                     Text('Height',

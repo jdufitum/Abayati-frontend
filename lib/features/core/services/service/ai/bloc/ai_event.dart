@@ -11,6 +11,13 @@ final class SearchEvent extends AiEvent {
 
 final class GetMeasurementEvent extends AiEvent {}
 
+final class VirtualTryonEvent extends AiEvent {
+  final String clothId;
+  final File humanImage;
+
+  VirtualTryonEvent({required this.clothId, required this.humanImage});
+}
+
 final class CreateMeasurementEvent extends AiEvent {
   final String height;
   final String width;

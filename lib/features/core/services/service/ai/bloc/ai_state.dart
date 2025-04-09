@@ -9,7 +9,9 @@ sealed class AiState extends Equatable {
 final class AiInitial extends AiState {}
 
 final class AiLoading extends AiState {}
+
 final class SearchLoading extends AiState {}
+
 final class GetMeasurementLoading extends AiState {}
 
 final class SearchSuccess extends AiState {
@@ -42,4 +44,16 @@ final class CreateMeasurementError extends AiState {
   final String error;
 
   CreateMeasurementError({required this.error});
+}
+
+final class VirtualTryonSuccess extends AiState {
+  final VirtualTryonRsp virtualTryonRsp;
+
+  VirtualTryonSuccess({required this.virtualTryonRsp});
+}
+
+final class VirtualTryonError extends AiState {
+  final String error;
+
+  VirtualTryonError({required this.error});
 }

@@ -36,4 +36,6 @@ class Endpoints {
   static String get createMeasurements => 'user/createMeasurements';
 
   static String get getMeasurement => 'user/getMeasurement';
+
+  static String get virtualTryon => 'user/virtualTryon';
 }

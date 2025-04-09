@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:abayati/features/core/model/response/ai.dart';
 import 'package:abayati/features/core/model/response/measurement.dart';
 import 'package:abayati/features/core/services/api/exception/network_exception.dart';
 import 'package:abayati/features/core/services/service/ai/repository.dart';
@@ -58,6 +59,19 @@ class AiBloc extends Bloc<AiEvent, AiState> {
         final excp = NetworkExceptions.getDioException(e);
         final error = NetworkExceptions.getErrorMessage(excp);
         emit(CreateMeasurementError(error: error));
+      }
+    });
+    on<VirtualTryonEvent>((event, emit) async {
+      emit(AiLoading());
+      try {
+        final result = await _repository.virtualTryon(
+            clothId: event.clothId, humanImage: event.humanImage);
+        result.fold((error) => emit(VirtualTryonError(error: error)),
+            (data) => emit(VirtualTryonSuccess(virtualTryonRsp: data)));
+      } catch (e) {
+        final excp = NetworkExceptions.getDioException(e);
+        final error = NetworkExceptions.getErrorMessage(excp);
+        emit(VirtualTryonError(error: error));
       }
     });
   }

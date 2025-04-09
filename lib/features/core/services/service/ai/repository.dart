@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:abayati/features/core/model/response/abstract_response.dart';
+import 'package:abayati/features/core/model/response/ai.dart';
 import 'package:abayati/features/core/model/response/measurement.dart';
 import 'package:abayati/features/core/model/response/product.dart';
 import 'package:abayati/features/core/services/service/ai/datasource.dart';
@@ -45,6 +46,18 @@ class AIRepository {
       return Left(output.message!);
     } else {
       return Right(output);
+    }
+  }
+
+  Future<Either<String, VirtualTryonRsp>> virtualTryon(
+      {required String clothId, required File humanImage}) async {
+    final output = await _datasource.virtualTryon(
+        clothId: clothId, humanImage: humanImage);
+    if (output.error != null) {
+      return Left(output.message!);
+    } else {
+      final data = VirtualTryonRsp.fromJson(output.data);
+      return Right(data);
     }
   }
 }
