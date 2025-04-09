@@ -79,7 +79,7 @@ class SignIn extends HookWidget {
                   h(9),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, AppRoute.forgotPassword);
+                      // Navigator.pushNamed(context, AppRoute.forgotPassword);
                     },
                     child: Text('Forgot Passsword?',
                         textAlign: TextAlign.end,
@@ -118,25 +118,25 @@ class SignIn extends HookWidget {
                                     decorationStyle: TextDecorationStyle.solid))
                           ]),
                       textAlign: TextAlign.center),
-                  h(28),
-                  Text(
-                    '- OR Continue with -',
-                    textAlign: TextAlign.center,
-                    style: Montserrat.kFontW5
-                        .copyWith(fontSize: 12.spMin, color: AppColor.k575757),
-                  ),
-                  h(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SignUpOption(vector: Vectors.google),
-                      w(10),
-                      const SignUpOption(vector: Vectors.apple),
-                      w(10),
-                      const SignUpOption(vector: Vectors.facebook),
-                    ],
-                  ),
-                  h(20)
+                  // h(28),
+                  // Text(
+                  //   '- OR Continue with -',
+                  //   textAlign: TextAlign.center,
+                  //   style: Montserrat.kFontW5
+                  //       .copyWith(fontSize: 12.spMin, color: AppColor.k575757),
+                  // ),
+                  // h(20),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     const SignUpOption(vector: Vectors.google),
+                  //     w(10),
+                  //     const SignUpOption(vector: Vectors.apple),
+                  //     w(10),
+                  //     const SignUpOption(vector: Vectors.facebook),
+                  //   ],
+                  // ),
+                  // h(20)
                 ],
               ),
             );

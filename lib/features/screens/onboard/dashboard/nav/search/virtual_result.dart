@@ -12,49 +12,44 @@ class VirtualResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final result = ModalRoute
-        .settingsOf(context)
-        ?.arguments as String;
+    final result = ModalRoute.settingsOf(context)?.arguments as String;
     return Scaffold(
       body: SafeArea(
-          child:
-          Column( children: [
-            Container(
-                height: 100.h,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.r),
-                    color: AppColor.kA89294),
-                child: Text('Result',
-                    style: Montserrat.kFontW5
-                        .copyWith(fontSize: 48.spMin, color: AppColor.white))),
-            Flexible(
-              child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 15.w, vertical: 17.h),
-                  decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.circular(1.r),
-                      border: Border.all(color: AppColor.kA89294)),
-                  child: ListView(
-                    // crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.network(result),
-                      h(20),
-                      Text('This looks absolutely stunning on you.',
-                          textAlign: TextAlign.center,
-                          style: Montserrat.kFontW5.copyWith(
-                              fontSize: 17.spMin)),
-                      h(7),
-                      AppButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          text: 'Continue Shopping')
-                    ],
-                  )).eHPad(6),
-            ),
-          ])),
+          child: Column(children: [
+        Container(
+            height: 100.h,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5.r),
+                color: AppColor.kA89294),
+            child: Text('Result',
+                style: Montserrat.kFontW5
+                    .copyWith(fontSize: 48.spMin, color: AppColor.white))),
+        Flexible(
+          child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 17.h),
+              decoration: BoxDecoration(
+                  color: AppColor.white,
+                  borderRadius: BorderRadius.circular(1.r),
+                  border: Border.all(color: AppColor.kA89294)),
+              child: ListView(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Image.network(result),
+                  h(20),
+                  Text('This looks absolutely stunning on you.',
+                      textAlign: TextAlign.center,
+                      style: Montserrat.kFontW5.copyWith(fontSize: 17.spMin)),
+                  h(7),
+                  AppButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      text: 'Continue Shopping')
+                ],
+              )).eHPad(6),
+        ),
+      ])),
     );
   }
 }

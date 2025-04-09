@@ -131,7 +131,7 @@ class SearchContainer extends StatelessWidget {
                 hintStyle: Montserrat.kFontW4.copyWith(
                     color: AppColor.kBBBBBB, overflow: TextOverflow.visible),
                 hintText:
-                    'Let me help you find your perfect abaya. All you have to do is describe it to me. ',
+                    'Let me help you find your perfect product. All you have to do is describe it to me. ',
               ).copyWith(
                   hintMaxLines: 2,
                   prefixIcon: SvgPicture.asset(Vectors.searchAi,

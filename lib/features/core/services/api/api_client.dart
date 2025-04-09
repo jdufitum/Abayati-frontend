@@ -14,9 +14,9 @@ class ApiClient {
       : _dio = dio ??
             Dio(BaseOptions(
                 baseUrl: Endpoints.baseUrl,
-                connectTimeout: const Duration(seconds: 15),
-                receiveTimeout: const Duration(seconds: 15),
-                sendTimeout: const Duration(seconds: 15),
+                connectTimeout: const Duration(seconds: 300),
+                receiveTimeout: const Duration(seconds: 300),
+                sendTimeout: const Duration(seconds: 300),
                 headers: {'Authorization': 'Bearer ${globals.token}'})) {
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (DioException error, ErrorInterceptorHandler handler) {

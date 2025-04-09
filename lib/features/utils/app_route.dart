@@ -7,6 +7,7 @@ import 'package:abayati/features/screens/onboard/dashboard/nav/home/details.dart
 import 'package:abayati/features/screens/onboard/dashboard/nav/home/store/store_details.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/measure/front_view_measure.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/measure/view_measurement.dart';
+import 'package:abayati/features/screens/onboard/dashboard/nav/search/virtual_result.dart';
 import 'package:abayati/features/screens/onboard/dashboard/nav/setting/setting.dart';
 import 'package:abayati/features/screens/onboard/splash.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,6 +35,7 @@ class AppRoute {
   static const String frontViewMeasure = '/frontViewMeasure';
   static const String sideViewMeasure = '/sideViewMeasure';
   static const String completeMeasure = '/completeMeasure';
+  static const String virtualResult = '/virtualResult';
 
   static var routes = <String, Widget Function(BuildContext)>{
     splash: (context) => const Splash(),
@@ -53,5 +55,6 @@ class AppRoute {
     frontViewMeasure: (context) => const FrontViewMeasure(),
     sideViewMeasure: (context) => const SideViewMeasure(),
     completeMeasure: (context) => const CompleteMeasurement(),
+    virtualResult: (context) => const VirtualResult(),
   };
 }
