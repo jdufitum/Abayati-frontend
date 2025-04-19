@@ -69,19 +69,21 @@ class Wishlist extends HookWidget {
                   bloc: globals.wishlistCubit,
                   builder: (context, state) {
                     if (state.wishlist.isNotEmpty) {
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisExtent: 260.h,
-                            mainAxisSpacing: 10.h,
-                            crossAxisSpacing: 15.w),
-                        itemBuilder: (context, index) {
-                          final product = state.wishlist[index];
-                          return ItemCard(product: product);
-                        },
-                        itemCount: state.wishlist.length,
+                      return Expanded(
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          // physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisExtent: 260.h,
+                              mainAxisSpacing: 10.h,
+                              crossAxisSpacing: 15.w),
+                          itemBuilder: (context, index) {
+                            final product = state.wishlist[index];
+                            return ItemCard(product: product);
+                          },
+                          itemCount: state.wishlist.length,
+                        ),
                       );
                     } else {
                       return const Expanded(

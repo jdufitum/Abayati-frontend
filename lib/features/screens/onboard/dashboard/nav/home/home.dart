@@ -390,6 +390,8 @@ class ItemCard extends StatelessWidget {
                       Text(
                           product?.description ??
                               'Plain Black Colour Abaya \nAbaya 123',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style:
                               Montserrat.kFontW4.copyWith(fontSize: 10.spMin)),
                       h(4),
